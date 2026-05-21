@@ -1,0 +1,25 @@
+[project]
+name = "pv_bess_gym"
+version = "0.4.0"
+description = "Gymnasium simulator for hierarchical PV+BESS market participation."
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "gymnasium>=0.29",
+  "matplotlib>=3.7",
+  "pvlib>=0.10.4",
+  "requests>=2.31",
+  "openpyxl>=3.1",
+  "xlrd>=2.0.1",
+  "cvxpy>=1.4"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pv_bess_gym*"]
+exclude = ["example_data*", "scripts*", "outputs*"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Simulator outputs (generated at runtime)
+outputs/*
+!outputs/.gitkeep
+
+# Raw and processed dataset (too large for git; use example_data/ instead)
+data/raw/
+data/processed/
+
+# Auxiliary development folder
+auxiliary/outputs/
+auxiliary/vendor/
+auxiliary/processed/
+auxiliary/market_research/
+!auxiliary/README.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Coverage / test artefacts
+.coverage
+htmlcov/
+.pytest_cache/

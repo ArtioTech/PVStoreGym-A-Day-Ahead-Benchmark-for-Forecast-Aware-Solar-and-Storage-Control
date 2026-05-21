@@ -1,0 +1,37 @@
+{
+  "pv": {
+    "p_dc_kw": 550.0,
+    "p_ac_kw": 550.0,
+    "latitude": 37.98,
+    "longitude": 23.72,
+    "altitude_m": 70.0,
+    "tz": "Europe/Athens",
+    "tilt_deg": 20.0,
+    "azimuth_deg": 180.0,
+    "albedo": 0.2,
+    "system_losses_frac": 0.14,
+    "gamma_pdc_per_c": -0.0035,
+    "eta_inv_nom": 0.965,
+    "eta_inv_ref": 0.963,
+    "default_wind_mps": 1.0
+  },
+  "battery": {
+    "e_max_kwh": 1075.0,
+    "p_pcs_kw": 373.0,
+    "soc_min": 0.05,
+    "soc_max": 0.95,
+    "aux_kw": 2.0,
+    "self_discharge_per_day": 0.001,
+    "eta_nom": 0.97,
+    "eta_slope": 0.02,
+    "taper_margin_soc": 0.03,
+    "deg_eur_per_kwh_throughput": 0.0
+  },
+  "grid": {
+    "export_cap_kw": 373.0,
+    "import_cap_kw": 373.0,
+    "allow_export": true,
+    "allow_import": true,
+    "loss_frac": 0.01
+  }
+}
