@@ -1,0 +1,21 @@
+{
+  "title": "PV-BESS-Gym: a market-sequenced Gymnasium benchmark for solar-plus-storage in the Greek electricity market",
+  "upload_type": "software",
+  "version": "2.1.0",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Korkas, Christos D.",
+      "affiliation": "Power & Energy Systems Laboratory, University of Western Macedonia"
+    }
+  ],
+  "description": "Gymnasium environment, perfect-foresight oracle, benchmark protocol and baselines (rule-based, MPC, PPO, SAC, PPO with a safety projection layer) for day-ahead, intraday, aFRR and real-time operation of a PV-plus-battery plant in the Greek electricity market. Market data are not redistributed; the repository contains the scripts that rebuild the dataset from HEnEx, IPTO and Open-Meteo publications.",
+  "keywords": ["Gymnasium", "reinforcement learning", "battery energy storage", "photovoltaics", "electricity markets", "benchmark"],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/ArtioTech/PVStoreGym",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

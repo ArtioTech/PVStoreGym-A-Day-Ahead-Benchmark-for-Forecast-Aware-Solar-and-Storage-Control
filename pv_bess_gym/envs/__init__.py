@@ -4,7 +4,9 @@ from pv_bess_gym.envs.pv_bess_greece_env import (
     DayAheadPVBESSGreeceEnv,
     HierarchicalConfig,
     HierarchicalPVBESSGreeceEnv,
+    InformationConfig,
     MarketConfig,
+    SimOptions,
     PlantConfig,
     UnifiedPVBESSGreeceEnv,
 )
@@ -14,6 +16,8 @@ __all__ = [
     "DayAheadPVBESSGreeceEnv",
     "HierarchicalConfig",
     "HierarchicalPVBESSGreeceEnv",
+    "InformationConfig",
+    "SimOptions",
     "MarketConfig",
     "PlantConfig",
     "UnifiedPVBESSGreeceEnv",

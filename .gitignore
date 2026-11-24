@@ -1,48 +1,40 @@
-# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-.Python
 *.egg-info/
-dist/
 build/
-*.egg
-
-# Virtual environments
+dist/
 .venv/
 venv/
-env/
-
-# IDE
-.idea/
-.vscode/
-*.iml
-
-# Simulator outputs (generated at runtime)
-outputs/*
-!outputs/.gitkeep
-
-# Raw and processed dataset (too large for git; use example_data/ instead)
-data/raw/
-data/processed/
-
-# Auxiliary development folder
-auxiliary/outputs/
-auxiliary/vendor/
-auxiliary/processed/
-auxiliary/market_research/
-!auxiliary/README.md
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# Coverage / test artefacts
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
-.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+# runtime outputs and raw/processed market data (not redistributed)
+outputs/*
+!outputs/.gitkeep
+data/raw/
+data/processed/
+# benchmark intermediates (per-job files, checkpoints); aggregated results are kept
+results/parts/
+results/rl_training/checkpoints/
+results/rl_training/runs/
+.venv-omnisafe/
+results/v3/parts/
+results/v3/rl_training/checkpoints/
+results/v3/rl_training/runs/
+results/rev1/parts/
+results/rev1/rl_training/checkpoints/
+results/rev1/rl_training/runs/
+results/rev1/part0/steplogs/
+results/rev1/part0/steplogs_rev1/
+
+# upload bundle for sharing (not part of the repository)
+PV-BESS-Gym-*.zip
+results/rev1/logs/
+results/rev1/*.log
+results/rev1/part0/*.log
+results/rev1/run_full.out

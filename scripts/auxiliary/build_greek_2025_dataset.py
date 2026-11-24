@@ -55,6 +55,12 @@ def parse_args() -> argparse.Namespace:
         help="Allow NaN placeholders for missing market columns instead of failing fast.",
     )
     parser.add_argument("--seed", type=int, default=2025, help="Seed for synthetic aFRR activations.")
+    parser.add_argument(
+        "--afrr-activation",
+        choices=["synthetic", "system_ratio"],
+        default="synthetic",
+        help="aFRR activation signal: seeded synthetic model (default) or IPTO system energy/capacity ratio (experimental).",
+    )
     parser.add_argument("--log-level", default="INFO", help="Logging level, e.g. INFO or DEBUG.")
     return parser.parse_args()
 
@@ -74,6 +80,7 @@ def main() -> None:
         plant_config=args.plant_config,
         allow_missing_market_data=args.allow_missing_market_data,
         seed=args.seed,
+        afrr_activation=args.afrr_activation,
     )
     created = build_greek_2025_dataset(config)
     print("\nCreated/modified files:")

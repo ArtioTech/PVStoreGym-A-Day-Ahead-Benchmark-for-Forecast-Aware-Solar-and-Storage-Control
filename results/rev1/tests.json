@@ -1,0 +1,723 @@
+{
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.14.10",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "2.4.2",
+      "scipy": "1.17.1",
+      "pandas": "3.0.1",
+      "gymnasium": "1.2.3",
+      "cvxpy": "1.8.1",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.15.0",
+      "stable_baselines3": "2.9.2",
+      "torch": "2.15.0",
+      "omnisafe": null,
+      "rliable": null
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": null,
+    "created_utc": "2026-11-19T09:19:29Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "processor": "arm"
+    },
+    "wall_clock_seconds": 446.1431350708008,
+    "command": "make test"
+  },
+  "summary": {
+    "passed": 99,
+    "failed": 1,
+    "skipped": 0
+  },
+  "brief_items": [
+    {
+      "item": "R4: balanced D-1 plan delivered exactly has zero imbalance",
+      "status": "fail",
+      "tests": [
+        "test_R4_balanced_d1_plan_delivered_exactly_has_zero_imbalance"
+      ],
+      "n_passed": 0,
+      "n_skipped": 0
+    },
+    {
+      "item": "R4 flag off reproduces version-4 planned imbalance",
+      "status": "pass",
+      "tests": [
+        "test_R4_flag_off_reproduces_version_4_plan_imbalance"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "U7 weather audit: no forecast before its issue time, full year",
+      "status": "pass",
+      "tests": [
+        "test_U7_weather_full_year_no_forecast_before_its_issue_time[T1-Nominal]",
+        "test_U7_weather_full_year_no_forecast_before_its_issue_time[T2-Forecast]"
+      ],
+      "n_passed": 2,
+      "n_skipped": 0
+    },
+    {
+      "item": "U7 weather provenance in the observation audit",
+      "status": "pass",
+      "tests": [
+        "test_U7_weather_provenance_is_exposed_in_the_observation_audit"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "R5: kappa scales each layer's residual",
+      "status": "pass",
+      "tests": [
+        "test_R5_kappa_scales_each_layer_residual"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "R6: DA-ONLY <= ORACLE-DELIVER <= ORACLE",
+      "status": "pass",
+      "tests": [
+        "test_R6_oracle_deliver_between_da_only_and_oracle[13]",
+        "test_R6_oracle_deliver_between_da_only_and_oracle[78]"
+      ],
+      "n_passed": 2,
+      "n_skipped": 0
+    },
+    {
+      "item": "check_env on every registered task",
+      "status": "pass",
+      "tests": [
+        "test_check_env_on_every_registered_task[T1-Nominal]",
+        "test_check_env_on_every_registered_task[T2-Forecast]",
+        "test_check_env_on_every_registered_task[T3-Gate]",
+        "test_check_env_on_every_registered_task[T4-Ageing]",
+        "test_check_env_on_every_registered_task[T5-Combined]"
+      ],
+      "n_passed": 5,
+      "n_skipped": 0
+    },
+    {
+      "item": "Determinism: same seed and actions, identical step-log hash",
+      "status": "pass",
+      "tests": [
+        "test_determinism_same_seed_same_actions_same_step_log_hash"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "Determinism: different seeds differ only in stochastic signals",
+      "status": "pass",
+      "tests": [
+        "test_different_seeds_differ_only_in_stochastic_signals"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "U1 DAM position delivered exactly",
+      "status": "pass",
+      "tests": [
+        "test_U1_dam_position_delivered_exactly"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "U2 full up/down activation settled once (v2); fails under v1",
+      "status": "pass",
+      "tests": [
+        "test_U2_full_activation_settled_once_v2[up]",
+        "test_U2_full_activation_settled_once_v2[down]",
+        "test_U2_fails_under_v1_settlement"
+      ],
+      "n_passed": 3,
+      "n_skipped": 0
+    },
+    {
+      "item": "U3 correction for a closed block goes to the first open block",
+      "status": "pass",
+      "tests": [
+        "test_U3_correction_goes_to_first_open_block[60-4]",
+        "test_U3_correction_goes_to_first_open_block[120-8]"
+      ],
+      "n_passed": 2,
+      "n_skipped": 0
+    },
+    {
+      "item": "U4 setpoint beyond PCS/SOC limit projected and penalised",
+      "status": "pass",
+      "tests": [
+        "test_U4_setpoint_beyond_pcs_is_clipped",
+        "test_U4_setpoint_beyond_soc_limit_is_projected_and_penalised",
+        "test_U4_setpoint_plus_reserve_beyond_pcs_is_penalised"
+      ],
+      "n_passed": 3,
+      "n_skipped": 0
+    },
+    {
+      "item": "U5 activation above available energy: shortfall recorded and penalised",
+      "status": "pass",
+      "tests": [
+        "test_U5_activation_above_available_energy_is_a_penalised_shortfall"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "U6 SOC energy-balance residual on random admissible days",
+      "status": "pass",
+      "tests": [
+        "test_U6_energy_balance_residual_on_random_admissible_days",
+        "test_U6_detects_the_v10_energy_creation"
+      ],
+      "n_passed": 2,
+      "n_skipped": 0
+    },
+    {
+      "item": "U7 observation audit: nothing observed before publication",
+      "status": "pass",
+      "tests": [
+        "test_U7_observation_audit_synthetic",
+        "test_U7_forecast_mode_hides_realised_dam_until_commitment",
+        "test_U7_weather_full_year_no_forecast_before_its_issue_time[T1-Nominal]",
+        "test_U7_weather_full_year_no_forecast_before_its_issue_time[T2-Forecast]",
+        "test_U7_weather_provenance_is_exposed_in_the_observation_audit",
+        "test_U7_full_year_observation_audit[T1-Nominal]",
+        "test_U7_full_year_observation_audit[T2-Forecast]"
+      ],
+      "n_passed": 7,
+      "n_skipped": 0
+    },
+    {
+      "item": "U8 inactive action keys ignored",
+      "status": "pass",
+      "tests": [
+        "test_U8_inactive_action_keys_are_ignored"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    },
+    {
+      "item": "Oracle >= every baseline on every day and seed",
+      "status": "pass",
+      "tests": [
+        "test_oracle_bounds_every_baseline_on_every_day_and_seed"
+      ],
+      "n_passed": 1,
+      "n_skipped": 0
+    }
+  ],
+  "all_tests": [
+    {
+      "test": "tests.test_battery::test_soc_stays_within_limits_under_random_actions",
+      "outcome": "passed",
+      "seconds": 0.052
+    },
+    {
+      "test": "tests.test_battery::test_full_power_saturates_at_the_bound[373.0-soc_min]",
+      "outcome": "passed",
+      "seconds": 0.013
+    },
+    {
+      "test": "tests.test_battery::test_full_power_saturates_at_the_bound[-373.0-soc_max]",
+      "outcome": "passed",
+      "seconds": 0.014
+    },
+    {
+      "test": "tests.test_battery::test_auxiliary_load_drains_an_idle_battery",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_battery::test_legacy_auxiliary_load_charged_the_battery",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_battery::test_empty_battery_can_be_charged_again",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_battery::test_round_trip_loses_energy",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_battery::test_vectorised_pv_matches_scalar_model",
+      "outcome": "passed",
+      "seconds": 0.049
+    },
+    {
+      "test": "tests.test_brief_units::test_U1_dam_position_delivered_exactly",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_brief_units::test_U2_full_activation_settled_once_v2[up]",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U2_full_activation_settled_once_v2[down]",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U2_fails_under_v1_settlement",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U3_correction_goes_to_first_open_block[60-4]",
+      "outcome": "passed",
+      "seconds": 0.011
+    },
+    {
+      "test": "tests.test_brief_units::test_U3_correction_goes_to_first_open_block[120-8]",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_brief_units::test_U4_setpoint_beyond_pcs_is_clipped",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U4_setpoint_beyond_soc_limit_is_projected_and_penalised",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_brief_units::test_U4_setpoint_plus_reserve_beyond_pcs_is_penalised",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_brief_units::test_U5_activation_above_available_energy_is_a_penalised_shortfall",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U6_energy_balance_residual_on_random_admissible_days",
+      "outcome": "passed",
+      "seconds": 0.038
+    },
+    {
+      "test": "tests.test_brief_units::test_U6_detects_the_v10_energy_creation",
+      "outcome": "passed",
+      "seconds": 0.03
+    },
+    {
+      "test": "tests.test_brief_units::test_U7_observation_audit_synthetic",
+      "outcome": "passed",
+      "seconds": 0.051
+    },
+    {
+      "test": "tests.test_brief_units::test_U7_forecast_mode_hides_realised_dam_until_commitment",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_brief_units::test_U8_inactive_action_keys_are_ignored",
+      "outcome": "passed",
+      "seconds": 0.011
+    },
+    {
+      "test": "tests.test_brief_units::test_determinism_same_seed_same_actions_same_step_log_hash",
+      "outcome": "passed",
+      "seconds": 0.03
+    },
+    {
+      "test": "tests.test_brief_units::test_different_seeds_differ_only_in_stochastic_signals",
+      "outcome": "passed",
+      "seconds": 0.055
+    },
+    {
+      "test": "tests.test_brief_units::test_oracle_bounds_every_baseline_on_every_day_and_seed",
+      "outcome": "passed",
+      "seconds": 24.167
+    },
+    {
+      "test": "tests.test_data::test_step_hold_does_not_interpolate_hourly_prices",
+      "outcome": "passed",
+      "seconds": 0.001
+    },
+    {
+      "test": "tests.test_data::test_step_hold_reports_gaps",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_data::test_legacy_example_data_is_flagged_as_proxy",
+      "outcome": "passed",
+      "seconds": 0.09
+    },
+    {
+      "test": "tests.test_data::test_independent_prices_pass_the_proxy_checks",
+      "outcome": "passed",
+      "seconds": 0.002
+    },
+    {
+      "test": "tests.test_env_api::test_check_env_v1",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_env_api::test_check_env_legacy",
+      "outcome": "passed",
+      "seconds": 0.008
+    },
+    {
+      "test": "tests.test_env_api::test_reset_seed_selects_day_deterministically",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_env_api::test_same_seed_same_trajectory",
+      "outcome": "passed",
+      "seconds": 0.031
+    },
+    {
+      "test": "tests.test_env_api::test_episode_days_restrict_sampling",
+      "outcome": "passed",
+      "seconds": 0.008
+    },
+    {
+      "test": "tests.test_env_api::test_explicit_day_and_start_idx",
+      "outcome": "passed",
+      "seconds": 0.007
+    },
+    {
+      "test": "tests.test_env_api::test_episode_is_truncated_not_terminated",
+      "outcome": "passed",
+      "seconds": 0.012
+    },
+    {
+      "test": "tests.test_env_api::test_legacy_terminates_with_zero_observation",
+      "outcome": "passed",
+      "seconds": 0.01
+    },
+    {
+      "test": "tests.test_env_api::test_legacy_reset_ignores_seed",
+      "outcome": "passed",
+      "seconds": 0.007
+    },
+    {
+      "test": "tests.test_env_api::test_dst_days_are_excluded_from_calendar_days",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_env_api::test_price_noise_is_seeded_and_only_affects_observations",
+      "outcome": "passed",
+      "seconds": 0.022
+    },
+    {
+      "test": "tests.test_env_api::test_dam_price_revealed_after_commitment",
+      "outcome": "passed",
+      "seconds": 0.008
+    },
+    {
+      "test": "tests.test_env_api::test_pv_forecast_error_scale",
+      "outcome": "passed",
+      "seconds": 0.014
+    },
+    {
+      "test": "tests.test_oracle::test_replay_never_exceeds_the_bound_and_is_close",
+      "outcome": "passed",
+      "seconds": 60.034
+    },
+    {
+      "test": "tests.test_oracle::test_breakdown_sums_to_objective",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_oracle::test_bound_dominates_random_and_idle_policies",
+      "outcome": "passed",
+      "seconds": 0.089
+    },
+    {
+      "test": "tests.test_oracle::test_no_imbalance_oracle_is_below_the_full_oracle",
+      "outcome": "passed",
+      "seconds": 42.259
+    },
+    {
+      "test": "tests.test_oracle::test_gate_closure_is_respected_in_the_plan",
+      "outcome": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "tests.test_oracle::test_oracle_rejects_legacy_env",
+      "outcome": "passed",
+      "seconds": 0.016
+    },
+    {
+      "test": "tests.test_realism_v3::test_R4_balanced_d1_plan_delivered_exactly_has_zero_imbalance",
+      "outcome": "failed",
+      "seconds": 0.828
+    },
+    {
+      "test": "tests.test_realism_v3::test_R4_flag_off_reproduces_version_4_plan_imbalance",
+      "outcome": "passed",
+      "seconds": 0.685
+    },
+    {
+      "test": "tests.test_realism_v3::test_U7_weather_full_year_no_forecast_before_its_issue_time[T1-Nominal]",
+      "outcome": "passed",
+      "seconds": 3.058
+    },
+    {
+      "test": "tests.test_realism_v3::test_U7_weather_full_year_no_forecast_before_its_issue_time[T2-Forecast]",
+      "outcome": "passed",
+      "seconds": 3.126
+    },
+    {
+      "test": "tests.test_realism_v3::test_U7_weather_provenance_is_exposed_in_the_observation_audit",
+      "outcome": "passed",
+      "seconds": 0.698
+    },
+    {
+      "test": "tests.test_realism_v3::test_R5_kappa_scales_each_layer_residual",
+      "outcome": "passed",
+      "seconds": 1.361
+    },
+    {
+      "test": "tests.test_realism_v3::test_R6_oracle_deliver_between_da_only_and_oracle[13]",
+      "outcome": "passed",
+      "seconds": 19.965
+    },
+    {
+      "test": "tests.test_realism_v3::test_R6_oracle_deliver_between_da_only_and_oracle[78]",
+      "outcome": "passed",
+      "seconds": 136.131
+    },
+    {
+      "test": "tests.test_rev1::test_A3_raw_henex_files_are_cet_wall_clock",
+      "outcome": "passed",
+      "seconds": 0.126
+    },
+    {
+      "test": "tests.test_rev1::test_A3_market_moved_one_hour_later_weather_unchanged",
+      "outcome": "passed",
+      "seconds": 1.524
+    },
+    {
+      "test": "tests.test_rev1::test_A3_ida3_starts_at_13_local_and_publication_times_unchanged",
+      "outcome": "passed",
+      "seconds": 0.009
+    },
+    {
+      "test": "tests.test_rev1::test_A3_first_day_without_market_data_is_skipped",
+      "outcome": "passed",
+      "seconds": 0.015
+    },
+    {
+      "test": "tests.test_rev1::test_A3_irradiance_moved_30_min_earlier",
+      "outcome": "passed",
+      "seconds": 0.001
+    },
+    {
+      "test": "tests.test_rev1::test_A3_flags_off_reproduce_v3_arrays",
+      "outcome": "passed",
+      "seconds": 1.515
+    },
+    {
+      "test": "tests.test_rev1::test_A2_position_clip_bounds_x_plus_y",
+      "outcome": "passed",
+      "seconds": 2.062
+    },
+    {
+      "test": "tests.test_rev1::test_A1_d1_plan_reference_trades_nothing_without_forecast_change[da-opt-rbc]",
+      "outcome": "passed",
+      "seconds": 0.827
+    },
+    {
+      "test": "tests.test_rev1::test_A1_d1_plan_reference_trades_nothing_without_forecast_change[da-opt-id-mpc]",
+      "outcome": "passed",
+      "seconds": 0.989
+    },
+    {
+      "test": "tests.test_rev1::test_A1_pv_only_flag_keeps_v3_rule",
+      "outcome": "passed",
+      "seconds": 0.764
+    },
+    {
+      "test": "tests.test_rev1::test_A2_oracle_respects_position_limit",
+      "outcome": "passed",
+      "seconds": 60.769
+    },
+    {
+      "test": "tests.test_rl::test_wrapper_passes_check_env",
+      "outcome": "passed",
+      "seconds": 0.117
+    },
+    {
+      "test": "tests.test_rl::test_observation_is_flat_bounded_and_matches_space",
+      "outcome": "passed",
+      "seconds": 0.037
+    },
+    {
+      "test": "tests.test_rl::test_action_scaling",
+      "outcome": "passed",
+      "seconds": 0.015
+    },
+    {
+      "test": "tests.test_rl::test_wrapper_is_seed_deterministic",
+      "outcome": "passed",
+      "seconds": 0.106
+    },
+    {
+      "test": "tests.test_rl::test_projection_respects_pcs_and_reserve",
+      "outcome": "passed",
+      "seconds": 0.016
+    },
+    {
+      "test": "tests.test_rl::test_projection_blocks_discharge_when_empty_and_charge_when_full",
+      "outcome": "passed",
+      "seconds": 0.017
+    },
+    {
+      "test": "tests.test_rl::test_projected_random_policy_has_no_violations_or_shortfalls",
+      "outcome": "passed",
+      "seconds": 0.186
+    },
+    {
+      "test": "tests.test_rl::test_policy_agent_uses_the_same_observation_as_the_wrapper",
+      "outcome": "passed",
+      "seconds": 0.043
+    },
+    {
+      "test": "tests.test_settlement::test_dam_and_imbalance_legs",
+      "outcome": "passed",
+      "seconds": 0.026
+    },
+    {
+      "test": "tests.test_settlement::test_reward_is_sum_of_components",
+      "outcome": "passed",
+      "seconds": 0.033
+    },
+    {
+      "test": "tests.test_settlement::test_delivered_energy_settles_with_metering_losses",
+      "outcome": "passed",
+      "seconds": 0.026
+    },
+    {
+      "test": "tests.test_settlement::test_no_losses_means_no_imbalance_when_schedule_is_met",
+      "outcome": "passed",
+      "seconds": 0.027
+    },
+    {
+      "test": "tests.test_settlement::test_intraday_gate_closure_delay[0-0]",
+      "outcome": "passed",
+      "seconds": 0.018
+    },
+    {
+      "test": "tests.test_settlement::test_intraday_gate_closure_delay[60-4]",
+      "outcome": "passed",
+      "seconds": 0.017
+    },
+    {
+      "test": "tests.test_settlement::test_intraday_gate_closure_delay[120-8]",
+      "outcome": "passed",
+      "seconds": 0.017
+    },
+    {
+      "test": "tests.test_settlement::test_intraday_decisions_only_on_block_boundaries",
+      "outcome": "passed",
+      "seconds": 0.017
+    },
+    {
+      "test": "tests.test_settlement::test_intraday_cannot_reach_past_the_delivery_day",
+      "outcome": "passed",
+      "seconds": 0.025
+    },
+    {
+      "test": "tests.test_settlement::test_afrr_capacity_payment",
+      "outcome": "passed",
+      "seconds": 0.027
+    },
+    {
+      "test": "tests.test_settlement::test_afrr_capacity_is_fixed_after_d1",
+      "outcome": "passed",
+      "seconds": 0.016
+    },
+    {
+      "test": "tests.test_settlement::test_afrr_up_activation_is_paid_once",
+      "outcome": "passed",
+      "seconds": 0.028
+    },
+    {
+      "test": "tests.test_settlement::test_afrr_down_activation_is_paid_back",
+      "outcome": "passed",
+      "seconds": 0.026
+    },
+    {
+      "test": "tests.test_settlement::test_legacy_double_counts_up_activation",
+      "outcome": "passed",
+      "seconds": 0.017
+    },
+    {
+      "test": "tests.test_settlement::test_reserve_violation_penalty",
+      "outcome": "passed",
+      "seconds": 0.026
+    },
+    {
+      "test": "tests.test_settlement::test_degradation_cost",
+      "outcome": "passed",
+      "seconds": 0.026
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_check_env_on_every_registered_task[T1-Nominal]",
+      "outcome": "passed",
+      "seconds": 1.475
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_check_env_on_every_registered_task[T2-Forecast]",
+      "outcome": "passed",
+      "seconds": 1.514
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_check_env_on_every_registered_task[T3-Gate]",
+      "outcome": "passed",
+      "seconds": 1.46
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_check_env_on_every_registered_task[T4-Ageing]",
+      "outcome": "passed",
+      "seconds": 1.486
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_check_env_on_every_registered_task[T5-Combined]",
+      "outcome": "passed",
+      "seconds": 1.445
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_ageing_tasks_refuse_to_run_without_the_author_value",
+      "outcome": "passed",
+      "seconds": 0.002
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_U7_full_year_observation_audit[T1-Nominal]",
+      "outcome": "passed",
+      "seconds": 36.476
+    },
+    {
+      "test": "tests.test_tasks_real_data::test_U7_full_year_observation_audit[T2-Forecast]",
+      "outcome": "passed",
+      "seconds": 37.169
+    }
+  ]
+}

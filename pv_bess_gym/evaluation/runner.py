@@ -183,7 +183,9 @@ def evaluate_agent(
     EvaluationResult with per-step logs, daily summary, and totals.
     """
     steps_per_day = int(round(24.0 / env.market.dt_h))
-    available_days = len(env.df_all) // steps_per_day
+    # v1 addresses calendar delivery days; the legacy core uses raw 96-row slices.
+    has_day_table = hasattr(env, "day_start_index")
+    available_days = int(env.num_days) if has_day_table else len(env.df_all) // steps_per_day
     resolved_days = _resolve_day_indices(
         available_days=available_days,
         start_day=start_day,
@@ -196,7 +198,7 @@ def evaluate_agent(
     daily_summary: list[dict[str, Any]] = []
 
     for sequence_index, dataset_day in enumerate(resolved_days):
-        day_start_idx = dataset_day * steps_per_day
+        day_start_idx = env.day_start_index(dataset_day) if has_day_table else dataset_day * steps_per_day
         day_soc_init = current_soc if (carry_soc_between_days or sequence_index == 0) else soc_init
         day_profit, current_soc, day_log = _run_single_day(
             env=env,

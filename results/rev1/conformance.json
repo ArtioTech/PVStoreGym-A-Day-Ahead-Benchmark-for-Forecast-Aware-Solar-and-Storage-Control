@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.14.10",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "2.4.2",
+      "scipy": "1.17.1",
+      "pandas": "3.0.1",
+      "gymnasium": "1.2.3",
+      "cvxpy": "1.8.1",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.15.0",
+      "stable_baselines3": "2.9.2",
+      "torch": "2.15.0",
+      "omnisafe": null,
+      "rliable": null
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": null,
+    "created_utc": "2026-11-19T09:19:35Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "processor": "arm"
+    },
+    "wall_clock_seconds": 4.025852918624878,
+    "command": "make conformance",
+    "task": "T1-Nominal",
+    "schedule": "prescribed"
+  },
+  "days": [
+    "2025-01-15",
+    "2025-04-10",
+    "2025-07-22",
+    "2025-10-15",
+    "2025-12-03"
+  ],
+  "max_abs_deviation_eur_per_leg_and_day": 1.3968860790303239e-14,
+  "max_abs_deviation_eur_per_step": 3.552713678800501e-15,
+  "max_abs_total_deviation_eur_per_day": 1.818105484007815e-14,
+  "steps_without_published_price": 0,
+  "tolerance_eur": 0.01,
+  "passed": true,
+  "reports": [
+    {
+      "day": "2025-01-15",
+      "algorithm": "prescribed",
+      "legs": {
+        "dam_eur": {
+          "simulator_eur": 382.07259999999997,
+          "independent_eur": 382.07259999999997,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "id_eur": {
+          "simulator_eur": 52.31275000000001,
+          "independent_eur": 52.31275000000001,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "imbalance_eur": {
+          "simulator_eur": -225.64723344731334,
+          "independent_eur": -225.64723344731334,
+          "deviation_eur": 9.492406860545088e-15,
+          "max_step_deviation_eur": 3.552713678800501e-15,
+          "steps_without_published_price": 0
+        },
+        "afrr_capacity_eur": {
+          "simulator_eur": 57.857299999999995,
+          "independent_eur": 57.8573,
+          "deviation_eur": -1.9984014443252818e-15,
+          "max_step_deviation_eur": 2.220446049250313e-16,
+          "steps_without_published_price": 0
+        },
+        "afrr_activation_eur": {
+          "simulator_eur": 10.378243044565245,
+          "independent_eur": 10.378243044565245,
+          "deviation_eur": -8.610869179151437e-16,
+          "max_step_deviation_eur": 4.440892098500626e-16,
+          "steps_without_published_price": 0
+        }
+      },
+      "total_simulator_eur": 276.97365959725187,
+      "total_deviation_eur": 6.632918498304663e-15,
+      "relative_deviation": 2.3947831385661752e-17
+    },
+    {
+      "day": "2025-04-10",
+      "algorithm": "prescribed",
+      "legs": {
+        "dam_eur": {
+          "simulator_eur": 119.1065,
+          "independent_eur": 119.1065,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "id_eur": {
+          "simulator_eur": 6.334100000000001,
+          "independent_eur": 6.334100000000001,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "imbalance_eur": {
+          "simulator_eur": 75.98405990869226,
+          "independent_eur": 75.98405990869227,
+          "deviation_eur": -2.078225829274527e-15,
+          "max_step_deviation_eur": 1.7763568394002505e-15,
+          "steps_without_published_price": 0
+        },
+        "afrr_capacity_eur": {
+          "simulator_eur": 45.0182,
+          "independent_eur": 45.01820000000001,
+          "deviation_eur": 2.7755575615628914e-16,
+          "max_step_deviation_eur": 2.220446049250313e-16,
+          "steps_without_published_price": 0
+        },
+        "afrr_activation_eur": {
+          "simulator_eur": -4.4194082282599805,
+          "independent_eur": -4.4194082282599805,
+          "deviation_eur": 1.0842956108074984e-16,
+          "max_step_deviation_eur": 1.1102230246251565e-16,
+          "steps_without_published_price": 0
+        }
+      },
+      "total_simulator_eur": 242.0234516804323,
+      "total_deviation_eur": -1.692240512037488e-15,
+      "relative_deviation": 6.992051804433903e-18
+    },
+    {
+      "day": "2025-07-22",
+      "algorithm": "prescribed",
+      "legs": {
+        "dam_eur": {
+          "simulator_eur": 157.2504,
+          "independent_eur": 157.2504,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "id_eur": {
+          "simulator_eur": 20.0022,
+          "independent_eur": 20.0022,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "imbalance_eur": {
+          "simulator_eur": 113.56070489065837,
+          "independent_eur": 113.5607048906584,
+          "deviation_eur": -1.3968860790303239e-14,
+          "max_step_deviation_eur": 3.552713678800501e-15,
+          "steps_without_published_price": 0
+        },
+        "afrr_capacity_eur": {
+          "simulator_eur": 51.0272,
+          "independent_eur": 51.0272,
+          "deviation_eur": -4.218847493575595e-15,
+          "max_step_deviation_eur": 2.220446049250313e-16,
+          "steps_without_published_price": 0
+        },
+        "afrr_activation_eur": {
+          "simulator_eur": 2.0801622870763907,
+          "independent_eur": 2.0801622870763907,
+          "deviation_eur": 6.653443800682529e-18,
+          "max_step_deviation_eur": 6.938893903907228e-18,
+          "steps_without_published_price": 0
+        }
+      },
+      "total_simulator_eur": 343.9206671777348,
+      "total_deviation_eur": -1.818105484007815e-14,
+      "relative_deviation": 5.286409505213701e-17
+    },
+    {
+      "day": "2025-10-15",
+      "algorithm": "prescribed",
+      "legs": {
+        "dam_eur": {
+          "simulator_eur": 234.8918,
+          "independent_eur": 234.8918,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "id_eur": {
+          "simulator_eur": 18.749362500000004,
+          "independent_eur": 18.749362500000004,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "imbalance_eur": {
+          "simulator_eur": -71.51339718930686,
+          "independent_eur": -71.51339718930686,
+          "deviation_eur": 5.208297172449444e-15,
+          "max_step_deviation_eur": 3.552713678800501e-15,
+          "steps_without_published_price": 0
+        },
+        "afrr_capacity_eur": {
+          "simulator_eur": 90.61359999999999,
+          "independent_eur": 90.6136,
+          "deviation_eur": -4.871103520542874e-15,
+          "max_step_deviation_eur": 4.440892098500626e-16,
+          "steps_without_published_price": 0
+        },
+        "afrr_activation_eur": {
+          "simulator_eur": 2.644157462900415,
+          "independent_eur": 2.6441574629004148,
+          "deviation_eur": 2.1381396426986535e-16,
+          "max_step_deviation_eur": 2.220446049250313e-16,
+          "steps_without_published_price": 0
+        }
+      },
+      "total_simulator_eur": 275.38552277359355,
+      "total_deviation_eur": 5.510076161764353e-16,
+      "relative_deviation": 2.0008590525270374e-18
+    },
+    {
+      "day": "2025-12-03",
+      "algorithm": "prescribed",
+      "legs": {
+        "dam_eur": {
+          "simulator_eur": 284.24767499999996,
+          "independent_eur": 284.24767499999996,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "id_eur": {
+          "simulator_eur": 28.877762500000003,
+          "independent_eur": 28.877762500000003,
+          "deviation_eur": 0.0,
+          "max_step_deviation_eur": 0.0,
+          "steps_without_published_price": 0
+        },
+        "imbalance_eur": {
+          "simulator_eur": -199.55900864419448,
+          "independent_eur": -199.55900864419448,
+          "deviation_eur": 6.682154829462661e-15,
+          "max_step_deviation_eur": 3.552713678800501e-15,
+          "steps_without_published_price": 0
+        },
+        "afrr_capacity_eur": {
+          "simulator_eur": 68.58394999999999,
+          "independent_eur": 68.58395,
+          "deviation_eur": -5.315192730392937e-15,
+          "max_step_deviation_eur": 4.440892098500626e-16,
+          "steps_without_published_price": 0
+        },
+        "afrr_activation_eur": {
+          "simulator_eur": 11.298010800891852,
+          "independent_eur": 11.298010800891854,
+          "deviation_eur": -4.789601798599829e-16,
+          "max_step_deviation_eur": 4.440892098500626e-16,
+          "steps_without_published_price": 0
+        }
+      },
+      "total_simulator_eur": 193.44838965669732,
+      "total_deviation_eur": 8.880019192097411e-16,
+      "relative_deviation": 4.5903815523387475e-18
+    }
+  ]
+}

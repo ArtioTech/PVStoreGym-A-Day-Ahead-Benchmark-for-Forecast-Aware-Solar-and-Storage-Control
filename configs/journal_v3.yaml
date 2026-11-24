@@ -1,0 +1,69 @@
+# Journal benchmark protocol v3 (realism brief v3, settlement v2), frozen.
+# Reproduces results/v3/ and figures/v3/. Run with PVBESS_PROTOCOL=configs/journal_v3.yaml
+# (make ... PROTOCOL=configs/journal_v3.yaml). Current protocol: configs/journal.yaml (rev1).
+name: pvbess-greece-2025-journal-v3
+results_subdir: v3                 # results/v3/, figures/v3/
+
+data:
+  signals: data/processed          # scripts/auxiliary/build_greek_2025_dataset.py
+  plant: example_data/station_athens.json
+
+simulator:                         # one flag per behaviour, see pv_bess_gym.envs.SimOptions
+  settlement: v2
+  metering_losses: true
+  battery_aux_drains: true
+  directional_taper: true
+  energy_limited_power: true
+  calendar_days: true
+  info_filter: true                # only published values are observable
+  da_forecaster: prev_day          # naive DAM forecast used when da_price_info = forecast
+  da_weather: day_ahead            # R1: D-1 layer sees Open-Meteo Previous Runs _previous_day2 (issued >= 48 h ahead)
+  id_weather: latest               # R2: intraday / real time see the newest forecast (short lead up to 3 h ahead, else _previous_day1)
+  short_lead_visible_h: 3.0        # assumed publication rule of the short-lead series (author decision D4)
+  da_plant_consistent: true        # R4: D-1 QP plans with auxiliary load and metering loss
+
+split:                             # inclusive delivery dates
+  train: ["2025-01-01", "2025-07-31"]
+  validation: ["2025-08-01", "2025-09-30"]
+  test: ["2025-10-01", "2025-12-31"]
+
+# Within-regime evaluation: ISO weeks of 2025 inside the train range that are
+# withheld from training (60-min DAM regime, like the training data).
+# Weeks 5, 10, 15, 20, 25, 30 = 27 Jan-2 Feb, 3-9 Mar, 7-13 Apr, 12-18 May,
+# 16-22 Jun, 21-27 Jul.
+heldout_iso_weeks: [5, 10, 15, 20, 25, 30]
+
+episode:
+  days_per_episode: 1              # one delivery day per episode; multi-day mode: evaluate_agent(carry_soc_between_days=True)
+  soc_init: 0.5
+  activation_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]   # per day, shared by all controllers
+
+tasks:
+  - configs/tasks/T1-Nominal.yaml
+  - configs/tasks/T2-Forecast.yaml
+  - configs/tasks/T3-Gate.yaml
+  - configs/tasks/T4-Ageing.yaml
+  - configs/tasks/T5-Combined.yaml
+
+baselines: [da-only, da-opt-rbc, da-opt-rt-mpc, da-opt-id-mpc, da-opt-mpc]
+rl_baselines: [da-opt-ppo, da-opt-sac, da-opt-ppol]
+rl_seeds: [0, 1, 2, 3, 4]
+
+rl:
+  total_timesteps: 300000          # the same environment-step budget for every algorithm
+  checkpoint_every: 30000          # checkpoints scored on the validation split
+  selection_activation_seeds: [0, 1, 2]
+  train_activation_seeds: [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009]   # never used in evaluation
+  tuning:                          # one seed, task T1-Nominal; best validation score wins
+    learning_rate: [0.0001, 0.0003, 0.001]
+    seed: 0
+    task: T1-Nominal
+
+oracle:
+  deliver_epsilon_kwh: 0.0         # R6: ORACLE-DELIVER must meter its schedule exactly (author decision D2)
+  deliver_splits: [test]           # R6: ORACLE-DELIVER (and S_D) on the test split only (author decision D7, compute)
+  time_limit_s: 120
+  mip_rel_gap: 0.0001
+
+score:
+  min_range_eur: 1.0               # days with U - J_L below this are excluded from the score and counted

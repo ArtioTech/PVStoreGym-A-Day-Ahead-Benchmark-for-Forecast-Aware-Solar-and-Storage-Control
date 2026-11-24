@@ -1,0 +1,6 @@
+# Benchmark task T3-Gate (protocol: configs/journal.yaml).
+name: T3-Gate
+forecast_residual_scaling: 1.0      # kappa: scales (weather forecast - actual) before the PV model
+da_price_info: forecast             # R3: naive prev_day DAM forecast before the D-1 commitment (version 4: realised)
+gate_closure_minutes: 120           # intraday gate-closure lead G
+c_thr_eur_mwh: 0.0               # degradation cost per MWh of battery throughput |p_bat| dt

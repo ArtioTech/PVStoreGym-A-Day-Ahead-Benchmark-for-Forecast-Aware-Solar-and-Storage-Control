@@ -20,7 +20,13 @@ from pv_bess_gym.data.builders.auxiliary.io_utils import (
     normalize_columns,
     pick_numeric_column,
     read_tabular,
+    step_hold_to_15min,
     upsample_to_15min,
+)
+from pv_bess_gym.data.builders.ipto_balancing import (
+    file_version,
+    parse_isp1_afrr_capacity_prices,
+    parse_system_afrr_activation,
 )
 from pv_bess_gym.data.builders.auxiliary.synthetic_signals import (
     build_afrr_activation_signals,
@@ -86,6 +92,9 @@ class Greek2025BuildConfig:
     seed: int = 2025
     save_metadata: bool = True
     download_public_data: bool = True
+    # "synthetic": seeded regime model (default). "system_ratio": IPTO system aFRR
+    # energy / awarded capacity. See docs/DATA.md before using the latter.
+    afrr_activation: str = "synthetic"
 
 
 @dataclass
@@ -122,6 +131,25 @@ def build_greek_2025_dataset(config: Greek2025BuildConfig) -> list[Path]:
         timeout_s=config.weather_timeout_s,
     )
     afrr_acts = build_afrr_activation_signals(weather.index, seed=config.seed + 29)
+    activation_sources: dict[str, ColumnSource] = {
+        column: ColumnSource(mode="synthetic", source="Seeded regime-based aFRR activation model")
+        for column in SYNTHETIC_COLUMNS
+    }
+    if config.afrr_activation not in {"synthetic", "system_ratio"}:
+        raise ValueError("afrr_activation must be 'synthetic' or 'system_ratio'.")
+    real_acts = (
+        parse_system_afrr_activation(config.raw_admie, weather.index, config.year)
+        if config.afrr_activation == "system_ratio"
+        else None
+    )
+    if real_acts is not None:
+        for column, parsed in real_acts.items():
+            afrr_acts[column] = parsed.frame["value"]
+            activation_sources[column] = ColumnSource(
+                mode="derived",
+                source="IPTO BalancingEnergyProduct / BalancingCapacityProduct",
+                notes=parsed.notes,
+            )
 
     market_frame, market_sources = build_market_frame(
         year=config.year,
@@ -131,6 +159,7 @@ def build_greek_2025_dataset(config: Greek2025BuildConfig) -> list[Path]:
         allow_missing=config.allow_missing_market_data,
     )
 
+    market_sources.update(activation_sources)
     full = pd.concat([weather, weather_fcst, market_frame, afrr_acts], axis=1)
     full["timestamp"] = full.index
     full = full[CANONICAL_COLUMNS]
@@ -198,7 +227,7 @@ def download_admie_public_data(session: requests.Session, year: int, month: Opti
                 path = raw_dir / f"admie_reserve_prices_{flavor}_{year}_{month_i:02d}.json"
                 path.write_text(response.text, encoding="utf-8")
                 downloaded.append(path)
-    for category in ["IMBABE", "BalancingCapacityProduct", "BalancingEnergyProduct"]:
+    for category in ["IMBABE", "BalancingCapacityProduct", "BalancingEnergyProduct", "ISP1ISPResults"]:
         for item in _fetch_admie_file_api(session, year, category, timeout_s):
             path = raw_dir / item["filename"]
             if not path.exists():
@@ -368,6 +397,12 @@ def build_market_frame(
                     notes=["Official ADMIE dashboard JSON snapshot normalized to a 15-minute Europe/Athens series."],
                 )
 
+    isp_prices = parse_isp1_afrr_capacity_prices(raw_admie, index, year)
+    if isp_prices is not None:
+        for column, parsed in isp_prices.items():
+            frame[column] = parsed.frame["value"]
+            sources[column] = ColumnSource(mode="real", source="IPTO ISP1ISPResults (aFRR sheet)", notes=parsed.notes)
+
     proxy_frame, proxy_sources = _build_market_proxies(frame, index)
     for column, source in proxy_sources.items():
         if frame[column].isna().all():
@@ -494,12 +529,17 @@ def build_month_metadata(
             "notes": source.notes,
         }
     for column in SYNTHETIC_COLUMNS:
-        source = "Seeded regime-based aFRR activation model"
-        column_meta[column] = {"classification": "synthetic", "source": source}
+        source = market_sources.get(column) or ColumnSource(mode="synthetic", source="Seeded regime-based aFRR activation model")
+        column_meta[column] = {
+            "classification": "derived_from_real" if source.mode == "derived" else "synthetic",
+            "source": source.source,
+            "notes": source.notes,
+        }
 
     real_columns = [column for column, meta in column_meta.items() if meta["classification"] == "real"]
     proxy_columns = [column for column, meta in column_meta.items() if meta["classification"] == "proxy_or_missing"]
     synthetic_columns = [column for column, meta in column_meta.items() if meta["classification"] == "synthetic"]
+    derived_columns = [column for column, meta in column_meta.items() if meta["classification"] == "derived_from_real"]
 
     return {
         "dataset": f"greek_{config.year}_{month:02d}",
@@ -512,6 +552,7 @@ def build_month_metadata(
         "real_columns": real_columns,
         "proxy_columns": proxy_columns,
         "synthetic_columns": synthetic_columns,
+        "derived_columns": derived_columns,
         "columns": column_meta,
     }
 
@@ -562,7 +603,7 @@ def _parse_henex_series(
     if workbook_parsed is not None:
         return workbook_parsed.frame["value"], ColumnSource(
             mode="real",
-            source=str(workbook_parsed.source_path),
+            source=f"HEnEx published {kind.upper()} results workbooks (first file: {workbook_parsed.source_path.name})",
             notes=workbook_parsed.notes,
         )
     parsed = _scan_market_files(root, target_index, year=year, file_patterns=patterns, column_patterns=price_patterns)
@@ -588,7 +629,7 @@ def _parse_admie_series(
         if workbook_parsed is not None:
             return workbook_parsed.frame["value"], ColumnSource(
                 mode="real",
-                source=str(workbook_parsed.source_path),
+                source=f"IPTO IMBABE weekly workbooks (first file: {workbook_parsed.source_path.name})",
                 notes=workbook_parsed.notes,
             )
     parsed = _scan_market_files(root, target_index, year=year, file_patterns=file_patterns, column_patterns=column_patterns)
@@ -850,7 +891,7 @@ def _fetch_admie_file_api(session: requests.Session, year: int, category: str, t
         return []
     items: list[dict[str, str]] = []
     for value in _walk_payload(payload):
-        if isinstance(value, str) and (".xlsx" in value.lower() or ".csv" in value.lower()):
+        if isinstance(value, str) and any(ext in value.lower() for ext in (".xlsx", ".xls", ".csv")):
             url = value if value.startswith("http") else urljoin("https://www.admie.gr", value)
             items.append({"url": url, "filename": Path(urlparse(url).path).name})
         elif isinstance(value, dict):
@@ -878,7 +919,7 @@ def _walk_payload(value: Any) -> list[Any]:
 
 def _find_download_url(value: dict[str, Any]) -> Optional[str]:
     for item in value.values():
-        if isinstance(item, str) and (".xlsx" in item.lower() or ".csv" in item.lower() or "/file-type/" in item):
+        if isinstance(item, str) and any(ext in item.lower() for ext in (".xlsx", ".xls", ".csv", "/file-type/")):
             return item
     return None
 
@@ -921,7 +962,9 @@ def _scan_henex_workbooks(root: Path, target_index: pd.DatetimeIndex, year: int,
         combined = combined.sort_values(["timestamp", "version"]).drop_duplicates(subset=["timestamp"], keep="last")
         notes = [f"Parsed {len(source_paths)} downloaded HEnEx workbook(s); latest file version preferred for duplicate timestamps."]
     series = combined.set_index("timestamp")["value"].sort_index()
-    aligned = upsample_to_15min(series, target_index, label=f"HEnEx {kind}")
+    aligned, n_gaps = step_hold_to_15min(series, target_index)
+    notes.append("Each clearing price is held constant over its market time unit (no interpolation).")
+    notes.append(f"{n_gaps} of {len(target_index)} steps had no published price and were forward/back-filled.")
     return ParsedSeries(
         frame=pd.DataFrame({"value": aligned}, index=target_index),
         source_path=source_paths[0],
@@ -958,6 +1001,7 @@ def _scan_admie_imbalance_workbooks(root: Path, target_index: pd.DatetimeIndex, 
         if value_col is None:
             continue
         frame = parsed[["timestamp", value_col]].rename(columns={value_col: "value"}).dropna()
+        frame["version"] = file_version(path)
         frames.append(frame)
         source_paths.append(path)
     if not frames:
@@ -966,13 +1010,18 @@ def _scan_admie_imbalance_workbooks(root: Path, target_index: pd.DatetimeIndex, 
     combined = combined[combined["timestamp"].dt.year == year]
     if combined.empty:
         return None
-    series = combined.groupby("timestamp", as_index=True)["value"].mean().sort_index()
-    aligned = upsample_to_15min(series, target_index, label="ADMIE IMBABE")
+    combined = combined.sort_values(["timestamp", "version"]).drop_duplicates(subset=["timestamp"], keep="last")
+    series = combined.set_index("timestamp")["value"].sort_index()
+    aligned, n_gaps = step_hold_to_15min(series, target_index, max_hold_steps=0)
     return ParsedSeries(
         frame=pd.DataFrame({"value": aligned}, index=target_index),
         source_path=source_paths[0],
         source_kind="real",
-        notes=["Parsed downloaded ADMIE activated balancing/settlement workbook(s) as imbalance price proxy."],
+        notes=[
+            f"IPTO IMBABE weekly workbooks ({len(source_paths)} file(s)), 'Imbalance Price' column; "
+            "latest published version per 15-minute period.",
+            f"{n_gaps} of {len(target_index)} steps had no published price and were forward/back-filled.",
+        ],
     )
 
 
@@ -1067,6 +1116,12 @@ def _build_daily_market_frame_from_filename(filename: str, df: pd.DataFrame) -> 
         mainland_mask = frame["bidding_zone_descr"].astype(str).str.contains("mainland greece", case=False, na=False)
         if mainland_mask.any():
             frame = frame.loc[mainland_mask].copy()
+    if "asset_descr" in frame.columns:
+        # Cross-border rows (GR-IT, GR-BG, ...) can carry the neighbouring price;
+        # the zonal clearing price is on the LOAD and SUPPLY rows.
+        internal_mask = frame["asset_descr"].astype(str).str.upper().isin(["LOAD", "SUPPLY"])
+        if internal_mask.any():
+            frame = frame.loc[internal_mask].copy()
     if frame.empty:
         return None
     if {"sort", "delivery_duration"}.issubset(frame.columns):
@@ -1098,7 +1153,7 @@ def _build_daily_market_frame_from_filename(filename: str, df: pd.DataFrame) -> 
     ).dropna()
     if out.empty:
         return None
-    return out.groupby("timestamp", as_index=False)["value"].mean()
+    return out.groupby("timestamp", as_index=False)["value"].median()
 
 
 def _henex_kind_priority(filename: str) -> int:

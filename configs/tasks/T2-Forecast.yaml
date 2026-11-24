@@ -1,0 +1,6 @@
+# Benchmark task T2-Forecast (protocol: configs/journal.yaml).
+name: T2-Forecast
+forecast_residual_scaling: 2.0      # kappa: scales (weather forecast - actual) before the PV model
+da_price_info: forecast             # what the D-1 layer sees as DAM prices before it commits
+gate_closure_minutes: 60           # intraday gate-closure lead G
+c_thr_eur_mwh: 0.0               # degradation cost per MWh of battery throughput |p_bat| dt

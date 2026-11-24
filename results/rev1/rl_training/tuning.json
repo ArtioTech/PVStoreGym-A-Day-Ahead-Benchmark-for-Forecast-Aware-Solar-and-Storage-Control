@@ -1,0 +1,115 @@
+{
+  "grid": {
+    "learning_rate": [
+      0.0001,
+      0.0003,
+      0.001
+    ]
+  },
+  "task": "T1-Nominal",
+  "seed": 0,
+  "budget_steps": 300000,
+  "selection_rule": "highest validation score of the best checkpoint; all other hyper-parameters at library defaults",
+  "results": [
+    {
+      "controller": "da-opt-ppo",
+      "learning_rate": 0.0001,
+      "validation_score": -0.14208830486792934,
+      "selected_steps": 60000,
+      "validation_cost_kw": 93.40937873981332
+    },
+    {
+      "controller": "da-opt-ppo",
+      "learning_rate": 0.0003,
+      "validation_score": -0.040805226336462594,
+      "selected_steps": 90000,
+      "validation_cost_kw": 752.8377547877767
+    },
+    {
+      "controller": "da-opt-ppo",
+      "learning_rate": 0.001,
+      "validation_score": -0.1795394193643535,
+      "selected_steps": 210000,
+      "validation_cost_kw": 1583.6463969076017
+    },
+    {
+      "controller": "da-opt-sac",
+      "learning_rate": 0.0001,
+      "validation_score": -0.10279813597007123,
+      "selected_steps": 60000,
+      "validation_cost_kw": 155.58616768709877
+    },
+    {
+      "controller": "da-opt-sac",
+      "learning_rate": 0.0003,
+      "validation_score": -0.18488784789410237,
+      "selected_steps": 90000,
+      "validation_cost_kw": 3198.577272079124
+    },
+    {
+      "controller": "da-opt-sac",
+      "learning_rate": 0.001,
+      "validation_score": -0.13145973738650027,
+      "selected_steps": 60000,
+      "validation_cost_kw": 70.89971691737672
+    },
+    {
+      "controller": "da-opt-ppol",
+      "learning_rate": 0.0001,
+      "validation_score": -0.20809894679985902,
+      "selected_steps": 30000,
+      "validation_cost_kw": 0.0
+    },
+    {
+      "controller": "da-opt-ppol",
+      "learning_rate": 0.0003,
+      "validation_score": -0.13883170565772315,
+      "selected_steps": 30000,
+      "validation_cost_kw": 0.6394183610041555
+    },
+    {
+      "controller": "da-opt-ppol",
+      "learning_rate": 0.001,
+      "validation_score": -0.13842878139094072,
+      "selected_steps": 30000,
+      "validation_cost_kw": 5.610423223644165
+    }
+  ],
+  "selected_learning_rate": {
+    "da-opt-ppo": 0.0003,
+    "da-opt-sac": 0.0001,
+    "da-opt-ppol": 0.001
+  },
+  "cost_budget_kw_per_episode": 108.1048154565893,
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.14.10",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "2.4.2",
+      "scipy": "1.17.1",
+      "pandas": "3.0.1",
+      "gymnasium": "1.2.3",
+      "cvxpy": "1.8.1",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.15.0",
+      "stable_baselines3": "2.9.2",
+      "torch": "2.15.0",
+      "omnisafe": null,
+      "rliable": null
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": 0,
+    "created_utc": "2026-11-19T00:01:00Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "processor": "arm"
+    },
+    "wall_clock_seconds": 1135.9962937831879
+  }
+}

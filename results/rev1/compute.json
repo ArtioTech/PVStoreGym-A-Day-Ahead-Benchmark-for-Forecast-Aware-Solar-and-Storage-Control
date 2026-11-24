@@ -1,0 +1,108 @@
+{
+  "environment_steps_per_second_single_core": 14558.234474450295,
+  "d1_optimisation_ms": {
+    "n": 19,
+    "mean": 8.160210364669757,
+    "p95": 10.581278806785122,
+    "max": 10.761915997136384,
+    "first_call_incl_compilation_ms": 23.7491249863524,
+    "note": "convex QP, CLARABEL via CVXPY, compiled once and re-solved"
+  },
+  "intraday_mpc_ms": {
+    "n": 480,
+    "mean": 3.053767429992149,
+    "p95": 3.227733656240161,
+    "max": 25.884959002723917
+  },
+  "realtime_mpc_ms": {
+    "n": 1920,
+    "mean": 15.417249425339227,
+    "p95": 19.886979818693348,
+    "max": 50.10279201087542
+  },
+  "oracle_milp_s": {
+    "n": 7760,
+    "mean": 11.787892805454657,
+    "p95": 45.761441612243644,
+    "max": 1064.5748789310455,
+    "max_mip_gap": 0.0967001629952627,
+    "note": "one delivery day, HiGHS via scipy.optimize.milp"
+  },
+  "rl_training": {
+    "da-opt-ppo": {
+      "total_timesteps": 300000,
+      "runs": 25,
+      "mean_train_minutes_per_seed": 11.778599690119425,
+      "mean_steps_per_second": 1336.3031262167308
+    },
+    "da-opt-ppol": {
+      "total_timesteps": 300000,
+      "runs": 25,
+      "mean_train_minutes_per_seed": 23.559757271289826,
+      "mean_steps_per_second": 796.4403496865631
+    },
+    "da-opt-sac": {
+      "total_timesteps": 300000,
+      "runs": 25,
+      "mean_train_minutes_per_seed": 129.7746200006803,
+      "mean_steps_per_second": 94.80318078422248
+    }
+  },
+  "decision_time_ms_per_step": {
+    "da-only": 0.10822406128119423,
+    "da-opt-id-mpc": 1.3712727539547984,
+    "da-opt-mpc": 28.16504266990366,
+    "da-opt-ppo": 0.2358799198755842,
+    "da-opt-ppol": 0.21380998144325322,
+    "da-opt-rbc": 0.11634883986869078,
+    "da-opt-rt-mpc": 27.034363434821323,
+    "da-opt-sac": 0.27109385218524756
+  },
+  "cpu_hours": {
+    "baselines": 14.820071468485727,
+    "rl-eval": 39.86184743742148,
+    "oracle": 25.473766023516657,
+    "oracle_deliver": 17.21274782001972,
+    "rl-train": 70.05356918136279,
+    "total": 167.42200193080637
+  },
+  "hardware": {
+    "cpu": "Apple M5 Pro",
+    "cores": 15,
+    "memory_gb": 48,
+    "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+    "accelerator": "none (CPU only)"
+  },
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.14.10",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "2.4.2",
+      "scipy": "1.17.1",
+      "pandas": "3.0.1",
+      "gymnasium": "1.2.3",
+      "cvxpy": "1.8.1",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.15.0",
+      "stable_baselines3": "2.9.2",
+      "torch": "2.15.0",
+      "omnisafe": null,
+      "rliable": null
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": 0,
+    "created_utc": "2026-11-19T09:09:52Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "processor": "arm"
+    },
+    "wall_clock_seconds": 32.63546586036682,
+    "command": "make compute"
+  }
+}

@@ -1,0 +1,33 @@
+# Conference configuration (SyNERGY MED 2026): the v0.4 simulator on the v0.4 data.
+#
+# The published totals (7836.3 / 7416.8 / 9093.6 EUR over 28 days) could NOT be
+# regenerated: the script and day list that produced them are not in the
+# repository, and no 7-day or 28-day window of the shipped data reproduces the
+# DA-OPT-RBC figure under these settings. The windows below are stated here
+# instead; `make audit` runs them under settlement v1 and v2.
+name: conference-v1
+data:
+  signals: example_data            # v0.4 sample (proxy DAM / intraday / aFRR capacity prices)
+  plant: example_data/station_athens.json
+simulator:                         # = SimOptions.legacy()
+  settlement: v1
+  metering_losses: false
+  battery_aux_drains: false
+  directional_taper: false
+  energy_limited_power: false
+  degradation_on_ac_power: false
+  calendar_days: false
+  truncate_at_day_end: false
+  random_start: false
+  info_filter: false
+episode:
+  soc_init: 0.10
+  carry_soc_between_days: true
+windows:                           # first delivery day of each 7-day window
+  winter: "2025-01-13"
+  spring: "2025-04-07"
+  summer: "2025-07-14"
+  autumn: "2025-10-06"
+days_per_window: 7
+controllers: [da-opt-rbc, da-opt-rt-mpc, da-opt-mpc]
+seed: 0

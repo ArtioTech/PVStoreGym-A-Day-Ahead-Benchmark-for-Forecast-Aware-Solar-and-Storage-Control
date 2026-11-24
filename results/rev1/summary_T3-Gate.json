@@ -1,0 +1,1762 @@
+{
+  "task": "T3-Gate",
+  "splits": {
+    "test": {
+      "n_days": 91,
+      "n_activation_seeds": 10,
+      "date_range": [
+        "2025-10-01",
+        "2025-12-31"
+      ],
+      "anchors": {
+        "U_mean_daily_eur": {
+          "value": 1230.7715424017615,
+          "ci95": [
+            1158.138751605451,
+            1310.4724120538654
+          ]
+        },
+        "U_rep_mean_daily_eur": {
+          "value": 1193.6777183011968,
+          "ci95": [
+            1120.2635169632385,
+            1273.0744094184288
+          ]
+        },
+        "J_L_mean_daily_eur": {
+          "value": 373.72866598681753,
+          "ci95": [
+            352.12593771595925,
+            396.16558237434054
+          ]
+        },
+        "relative_gap_U_minus_U_rep_over_U": 0.030138675475205438,
+        "max_mip_gap": 0.0022689544814931,
+        "episodes_excluded_from_score": 0,
+        "days_with_an_excluded_episode": 0
+      },
+      "controllers": {
+        "da-only": {
+          "n_episodes": 910,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "mean": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "median": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 373.72866598681753,
+            "ci95": [
+              352.12593771595925,
+              396.16558237434054
+            ]
+          },
+          "cvar5_daily_profit_eur": 178.84590325081695,
+          "reserve_deliverability": 0.8927591688458116,
+          "penalties_eur_per_day": 0.8028387937076967,
+          "cost_kw_per_day": 160.5476382675309,
+          "equivalent_full_cycles_per_day": 0.8733209444237305,
+          "curtailment_kwh_per_day": 1.708703183556337,
+          "decision_time_ms_per_step": 0.11973273075827151,
+          "components_eur_per_day": {
+            "dam_eur": 206.75269966355236,
+            "id_eur": 0.0,
+            "afrr_capacity_eur": 158.36160884743714,
+            "afrr_activation_eur": 2.526781112482859,
+            "imbalance_eur": 6.89041515705299,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.8028387937076967
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": 0.0628319597069597,
+            "mean_imbalance_kwh_per_day": 88.80344963000917,
+            "correlation_with_id_minus_imbalance_price": -0.02410545350571632
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 1702.1978822113153,
+            "metered_kwh_per_day": 1791.0013318413246,
+            "share_steps_short": 0.3315934065934066,
+            "share_steps_long": 0.4940934065934066
+          }
+        },
+        "da-opt-rbc": {
+          "n_episodes": 910,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.00047938367760397526,
+              "ci95": [
+                -0.00015601338818675112,
+                0.0011209576692782016
+              ]
+            },
+            "mean": {
+              "value": 0.0003961179385746001,
+              "ci95": [
+                -0.0007978730109996432,
+                0.0016327170538577664
+              ]
+            },
+            "median": {
+              "value": 0.0001129646643482,
+              "ci95": [
+                -0.00041088653562452993,
+                0.00061354528083015
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 374.46470280228806,
+            "ci95": [
+              352.99327720532676,
+              396.806002495078
+            ]
+          },
+          "cvar5_daily_profit_eur": 179.492394171182,
+          "reserve_deliverability": 0.8949872754538223,
+          "penalties_eur_per_day": 0.7825256009012205,
+          "cost_kw_per_day": 156.4917065309051,
+          "equivalent_full_cycles_per_day": 0.8704297971654926,
+          "curtailment_kwh_per_day": 1.408660666741554,
+          "decision_time_ms_per_step": 0.12863694097612077,
+          "components_eur_per_day": {
+            "dam_eur": 206.75269966355236,
+            "id_eur": 1.3381243012128088,
+            "afrr_capacity_eur": 158.36160884743714,
+            "afrr_activation_eur": 2.526781112482859,
+            "imbalance_eur": 6.26801447850409,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.7825256009012205
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": 0.06632326007326007,
+            "mean_imbalance_kwh_per_day": 88.28021374601592,
+            "correlation_with_id_minus_imbalance_price": -0.0167705225655561
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 1705.2495012994539,
+            "metered_kwh_per_day": 1793.5297150454699,
+            "share_steps_short": 0.33202838827838826,
+            "share_steps_long": 0.4964629120879121
+          }
+        },
+        "da-opt-rt-mpc": {
+          "n_episodes": 910,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.014937343872821012,
+              "ci95": [
+                -0.01656138981709952,
+                -0.013269245032262499
+              ]
+            },
+            "mean": {
+              "value": -0.012746134876676276,
+              "ci95": [
+                -0.01465256291544849,
+                -0.01077300022089857
+              ]
+            },
+            "median": {
+              "value": -0.015910979452697302,
+              "ci95": [
+                -0.01758269712122925,
+                -0.013802379692688299
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 365.39538494531655,
+            "ci95": [
+              343.26962615246396,
+              388.5130030143958
+            ]
+          },
+          "cvar5_daily_profit_eur": 163.2073605705596,
+          "reserve_deliverability": 0.9480164876770302,
+          "penalties_eur_per_day": 0.36909823965973493,
+          "cost_kw_per_day": 73.81260576604403,
+          "equivalent_full_cycles_per_day": 0.8605046797450876,
+          "curtailment_kwh_per_day": 1.4485521958692087,
+          "decision_time_ms_per_step": 26.956284552935497,
+          "components_eur_per_day": {
+            "dam_eur": 206.75269966355236,
+            "id_eur": 1.3381243012128088,
+            "afrr_capacity_eur": 158.36160884743714,
+            "afrr_activation_eur": 2.526781112482859,
+            "imbalance_eur": -3.214730739708799,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.36909823965973493
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.5309981684981685,
+            "mean_imbalance_kwh_per_day": 0.2325682300673839,
+            "correlation_with_id_minus_imbalance_price": -0.03029148902323247
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 1705.2495012994539,
+            "metered_kwh_per_day": 1705.4820695295214,
+            "share_steps_short": 0.6144459706959707,
+            "share_steps_long": 0.14251373626373626
+          }
+        },
+        "da-opt-id-mpc": {
+          "n_episodes": 910,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0031702043245431283,
+              "ci95": [
+                0.0012119355343059972,
+                0.005133041706171791
+              ]
+            },
+            "mean": {
+              "value": 0.003024831463348062,
+              "ci95": [
+                -0.0010214430307989436,
+                0.007086685407376665
+              ]
+            },
+            "median": {
+              "value": 0.00172531378905465,
+              "ci95": [
+                -0.00010835407532382469,
+                0.0034303950299008
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 370.073678835341,
+            "ci95": [
+              347.49738840148495,
+              392.80487756828217
+            ]
+          },
+          "cvar5_daily_profit_eur": 137.39567601813528,
+          "reserve_deliverability": 0.8665190618855385,
+          "penalties_eur_per_day": 1.0153123485900777,
+          "cost_kw_per_day": 203.05240948101132,
+          "equivalent_full_cycles_per_day": 0.8566224734232991,
+          "curtailment_kwh_per_day": 1.5141305197629389,
+          "decision_time_ms_per_step": 1.256598494249893,
+          "components_eur_per_day": {
+            "dam_eur": 206.75269966355236,
+            "id_eur": 110.31235078687145,
+            "afrr_capacity_eur": 158.36160884743714,
+            "afrr_activation_eur": 2.526781112482859,
+            "imbalance_eur": -106.86444922641263,
+            "degradation_eur": 0.0,
+            "penalties_eur": 1.0153123485900777
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.13104395604395602,
+            "mean_imbalance_kwh_per_day": -463.38592675443596,
+            "correlation_with_id_minus_imbalance_price": 0.021180358215493723
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2282.2863987275273,
+            "metered_kwh_per_day": 1818.9004719730913,
+            "share_steps_short": 0.41475503663003666,
+            "share_steps_long": 0.41177884615384613
+          }
+        },
+        "da-opt-mpc": {
+          "n_episodes": 910,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.005083161198015667,
+              "ci95": [
+                -0.007742884494755545,
+                -0.0024038642859535862
+              ]
+            },
+            "mean": {
+              "value": 0.00014341468687426585,
+              "ci95": [
+                -0.00374890424960906,
+                0.003998126258230159
+              ]
+            },
+            "median": {
+              "value": -0.00569557853228995,
+              "ci95": [
+                -0.0082736140771276,
+                -0.0030244235054978
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 370.1228447757985,
+            "ci95": [
+              347.83089404269236,
+              393.6702456611112
+            ]
+          },
+          "cvar5_daily_profit_eur": 167.2103834315753,
+          "reserve_deliverability": 0.9226626584622469,
+          "penalties_eur_per_day": 0.5912644891953587,
+          "cost_kw_per_day": 118.24149623713363,
+          "equivalent_full_cycles_per_day": 0.8760131690352347,
+          "curtailment_kwh_per_day": 1.567264074739977,
+          "decision_time_ms_per_step": 27.23222126083219,
+          "components_eur_per_day": {
+            "dam_eur": 206.75269966355236,
+            "id_eur": 110.31235078687145,
+            "afrr_capacity_eur": 158.36160884743714,
+            "afrr_activation_eur": 2.526781112482859,
+            "imbalance_eur": -107.23933114534996,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.5912644891953587
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.5903159340659341,
+            "mean_imbalance_kwh_per_day": -519.9259203001424,
+            "correlation_with_id_minus_imbalance_price": 0.017370373914451256
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2282.2863987275273,
+            "metered_kwh_per_day": 1762.360478427385,
+            "share_steps_short": 0.6413576007326007,
+            "share_steps_long": 0.11975732600732601
+          }
+        },
+        "da-opt-ppo": {
+          "n_episodes": 4550,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.1259539886409321,
+              "ci95": [
+                -0.13102427946512102,
+                -0.12075552233105268
+              ]
+            },
+            "mean": {
+              "value": -0.12182125372337625,
+              "ci95": [
+                -0.1271381729436785,
+                -0.11674162084194213
+              ]
+            },
+            "median": {
+              "value": -0.1260108954306597,
+              "ci95": [
+                -0.1302104575908161,
+                -0.12039965256468885
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 277.6855909299517,
+            "ci95": [
+              255.96220258716738,
+              299.69270522674094
+            ]
+          },
+          "cvar5_daily_profit_eur": -55.1614948964936,
+          "reserve_deliverability": 0.8921276790602841,
+          "penalties_eur_per_day": 5.695027359085891,
+          "cost_kw_per_day": 719.2724647324051,
+          "equivalent_full_cycles_per_day": 0.4367986973789328,
+          "curtailment_kwh_per_day": 7.439642835417547,
+          "decision_time_ms_per_step": 0.2031868255107343,
+          "components_eur_per_day": {
+            "dam_eur": 206.7505529514968,
+            "id_eur": 11.877718218609301,
+            "afrr_capacity_eur": 158.36160888982477,
+            "afrr_activation_eur": 2.5267810520463896,
+            "imbalance_eur": -96.13604282293966,
+            "degradation_eur": 0.0,
+            "penalties_eur": 5.695027359085891
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.10284798534798535,
+            "mean_imbalance_kwh_per_day": -231.43744994039713,
+            "correlation_with_id_minus_imbalance_price": -0.01772045877840478
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 1785.0253619639918,
+            "metered_kwh_per_day": 1553.5879120235948,
+            "share_steps_short": 0.5514239926739927,
+            "share_steps_long": 0.44857600732600733
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.12444020706867277,
+            "1": -0.10875578573250902,
+            "2": -0.15997412562204785,
+            "3": -0.11173177644383891,
+            "4": -0.12629541101274475
+          },
+          "score_iqm_std_over_rl_seeds": 0.020355710834527002
+        },
+        "da-opt-sac": {
+          "n_episodes": 4550,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.12776181820282503,
+              "ci95": [
+                -0.13456893004445125,
+                -0.12133759715086674
+              ]
+            },
+            "mean": {
+              "value": -0.15283214877592605,
+              "ci95": [
+                -0.1638424635627532,
+                -0.14264040072076994
+              ]
+            },
+            "median": {
+              "value": -0.1346264060856195,
+              "ci95": [
+                -0.143291631482368,
+                -0.12826615681687306
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 237.19497450076074,
+            "ci95": [
+              203.5320833475888,
+              268.57677450272604
+            ]
+          },
+          "cvar5_daily_profit_eur": -695.763567870957,
+          "reserve_deliverability": 0.9188941903126737,
+          "penalties_eur_per_day": 37.16592907038743,
+          "cost_kw_per_day": 469.6961287606659,
+          "equivalent_full_cycles_per_day": 0.43350762500661916,
+          "curtailment_kwh_per_day": 6.18811838397519,
+          "decision_time_ms_per_step": 0.25954905563459363,
+          "components_eur_per_day": {
+            "dam_eur": 206.7505529514968,
+            "id_eur": 116.822313702073,
+            "afrr_capacity_eur": 158.36160888982477,
+            "afrr_activation_eur": 2.5267810520463896,
+            "imbalance_eur": -210.10035302429276,
+            "degradation_eur": 0.0,
+            "penalties_eur": 37.16592907038743
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.22282967032967033,
+            "mean_imbalance_kwh_per_day": -1233.5317267497048,
+            "correlation_with_id_minus_imbalance_price": -0.014484540079876653
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2730.141046472575,
+            "metered_kwh_per_day": 1496.6093197228702,
+            "share_steps_short": 0.6114148351648352,
+            "share_steps_long": 0.3885851648351648
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.16492086649406876,
+            "1": -0.10346566022004047,
+            "2": -0.10757937438713655,
+            "3": -0.1285220616089362,
+            "4": -0.13207247322505872
+          },
+          "score_iqm_std_over_rl_seeds": 0.024477426477436906
+        },
+        "da-opt-ppol": {
+          "n_episodes": 4550,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.10399212329339186,
+              "ci95": [
+                -0.10986355745621411,
+                -0.09803202820053179
+              ]
+            },
+            "mean": {
+              "value": -0.09282515584647935,
+              "ci95": [
+                -0.09834203971985789,
+                -0.0874208394437655
+              ]
+            },
+            "median": {
+              "value": -0.10515351038669304,
+              "ci95": [
+                -0.11152563123376961,
+                -0.09770548917484675
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 293.87474501480534,
+            "ci95": [
+              261.55236208501765,
+              326.4180546388503
+            ]
+          },
+          "cvar5_daily_profit_eur": -109.64558074027553,
+          "reserve_deliverability": 0.9858947305576408,
+          "penalties_eur_per_day": 0.22541835577618688,
+          "cost_kw_per_day": 45.083671155237376,
+          "equivalent_full_cycles_per_day": 0.42388014045394,
+          "curtailment_kwh_per_day": 0.38794018763579347,
+          "decision_time_ms_per_step": 0.18864878479620126,
+          "components_eur_per_day": {
+            "dam_eur": 206.7505529514968,
+            "id_eur": 167.08889435316652,
+            "afrr_capacity_eur": 158.36160888982477,
+            "afrr_activation_eur": 2.5267810520463896,
+            "imbalance_eur": -240.62767387595295,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.22541835577618688
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.18711080586080583,
+            "mean_imbalance_kwh_per_day": -865.444107565567,
+            "correlation_with_id_minus_imbalance_price": -0.003650643066935021
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2418.3750071546856,
+            "metered_kwh_per_day": 1552.9308995891186,
+            "share_steps_short": 0.5935554029304029,
+            "share_steps_long": 0.40644459706959707
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.11440467721236679,
+            "1": -0.10688254830626275,
+            "2": -0.10321817006400416,
+            "3": -0.10406196742387042,
+            "4": -0.09383463318548885
+          },
+          "score_iqm_std_over_rl_seeds": 0.0074054415123984705
+        }
+      },
+      "layer_attribution": {
+        "n_paired_episodes": 910,
+        "delta_id": {
+          "value": 0.007759131544162,
+          "ci95": [
+            -0.0037361043309436784,
+            0.01994345175470474
+          ]
+        },
+        "delta_rt": {
+          "value": -0.008011834795862337,
+          "ci95": [
+            -0.01189307318795133,
+            -0.004051832124928963
+          ]
+        },
+        "interaction": {
+          "value": 0.01026083603877708,
+          "ci95": [
+            0.006733255827564724,
+            0.014158195053340162
+          ]
+        }
+      }
+    },
+    "validation": {
+      "n_days": 61,
+      "n_activation_seeds": 10,
+      "date_range": [
+        "2025-08-01",
+        "2025-09-30"
+      ],
+      "anchors": {
+        "U_mean_daily_eur": {
+          "value": 1226.3022527837206,
+          "ci95": [
+            1169.9980043869405,
+            1286.6730537089888
+          ]
+        },
+        "U_rep_mean_daily_eur": {
+          "value": 1093.3082177659526,
+          "ci95": [
+            1024.5326533377363,
+            1164.303947896393
+          ]
+        },
+        "J_L_mean_daily_eur": {
+          "value": 366.3758660326776,
+          "ci95": [
+            346.03043560373357,
+            388.11685625875805
+          ]
+        },
+        "relative_gap_U_minus_U_rep_over_U": 0.10845126861332109,
+        "max_mip_gap": 0.0006393545367213,
+        "episodes_excluded_from_score": 0,
+        "days_with_an_excluded_episode": 0
+      },
+      "controllers": {
+        "da-only": {
+          "n_episodes": 610,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "mean": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "median": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 366.3758660326776,
+            "ci95": [
+              346.03043560373357,
+              388.11685625875805
+            ]
+          },
+          "cvar5_daily_profit_eur": 223.19575800870308,
+          "reserve_deliverability": 0.9211084076927616,
+          "penalties_eur_per_day": 0.6328365168441361,
+          "cost_kw_per_day": 126.56730336882723,
+          "equivalent_full_cycles_per_day": 0.9302294864829607,
+          "curtailment_kwh_per_day": 2.8947133272150736,
+          "decision_time_ms_per_step": 0.1388578324348503,
+          "components_eur_per_day": {
+            "dam_eur": 207.12980028698786,
+            "id_eur": 0.0,
+            "afrr_capacity_eur": 157.3394228428387,
+            "afrr_activation_eur": -0.5587903764303864,
+            "imbalance_eur": 3.098269796125558,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.6328365168441361
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.15686475409836065,
+            "mean_imbalance_kwh_per_day": 44.88421784057406,
+            "correlation_with_id_minus_imbalance_price": -0.0015599473211432744
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2923.7332380096977,
+            "metered_kwh_per_day": 2968.617455850272,
+            "share_steps_short": 0.4211919398907104,
+            "share_steps_long": 0.42016734972677594
+          }
+        },
+        "da-opt-rbc": {
+          "n_episodes": 610,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.00013697065635584845,
+              "ci95": [
+                -0.00045307772462370915,
+                0.0001303954631787332
+              ]
+            },
+            "mean": {
+              "value": -0.0011628208223191101,
+              "ci95": [
+                -0.0018098541768951165,
+                -0.0005097818403516263
+              ]
+            },
+            "median": {
+              "value": -2.0570346738745637e-05,
+              "ci95": [
+                -0.00021920770417789998,
+                0.00024653336032386477
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 365.1988004417162,
+            "ci95": [
+              344.55080263208964,
+              387.09677858153015
+            ]
+          },
+          "cvar5_daily_profit_eur": 218.9889701798258,
+          "reserve_deliverability": 0.921429319095261,
+          "penalties_eur_per_day": 0.6238402759252993,
+          "cost_kw_per_day": 124.76805518505986,
+          "equivalent_full_cycles_per_day": 0.9389338193981327,
+          "curtailment_kwh_per_day": 2.8122917133001586,
+          "decision_time_ms_per_step": 0.14678012311139788,
+          "components_eur_per_day": {
+            "dam_eur": 207.12980028698786,
+            "id_eur": -0.9061698453803783,
+            "afrr_capacity_eur": 157.3394228428387,
+            "afrr_activation_eur": -0.5587903764303864,
+            "imbalance_eur": 2.8183778096256935,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.6238402759252993
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.15259562841530053,
+            "mean_imbalance_kwh_per_day": 51.4566559300126,
+            "correlation_with_id_minus_imbalance_price": 0.02069894879190379
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2914.9011032446915,
+            "metered_kwh_per_day": 2966.3577591747044,
+            "share_steps_short": 0.4301912568306011,
+            "share_steps_long": 0.422301912568306
+          }
+        },
+        "da-opt-rt-mpc": {
+          "n_episodes": 610,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.010952657075690504,
+              "ci95": [
+                -0.011986149740466148,
+                -0.009989683390611131
+              ]
+            },
+            "mean": {
+              "value": -0.01160501581943443,
+              "ci95": [
+                -0.012741097196079756,
+                -0.010471318833205744
+              ]
+            },
+            "median": {
+              "value": -0.010977474924820749,
+              "ci95": [
+                -0.0119780928495474,
+                -0.009802709921695237
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 356.63452680102114,
+            "ci95": [
+              336.93324049266266,
+              377.6806244040161
+            ]
+          },
+          "cvar5_daily_profit_eur": 222.2173710467456,
+          "reserve_deliverability": 0.9332410713246448,
+          "penalties_eur_per_day": 0.5050614322532947,
+          "cost_kw_per_day": 101.01228645065896,
+          "equivalent_full_cycles_per_day": 0.8733339618362875,
+          "curtailment_kwh_per_day": 3.6000373983586647,
+          "decision_time_ms_per_step": 26.907470538439696,
+          "components_eur_per_day": {
+            "dam_eur": 207.12980028698786,
+            "id_eur": -0.9061698453803783,
+            "afrr_capacity_eur": 157.3394228428387,
+            "afrr_activation_eur": -0.5587903764303864,
+            "imbalance_eur": -5.86467467474139,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.5050614322532947
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.6031933060109289,
+            "mean_imbalance_kwh_per_day": 17.749377703395908,
+            "correlation_with_id_minus_imbalance_price": 0.008612147711044764
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2914.9011032446915,
+            "metered_kwh_per_day": 2932.6504809480875,
+            "share_steps_short": 0.6295423497267759,
+            "share_steps_long": 0.16615437158469945
+          }
+        },
+        "da-opt-id-mpc": {
+          "n_episodes": 610,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0072038623879091485,
+              "ci95": [
+                0.005155671137355856,
+                0.009530853348812067
+              ]
+            },
+            "mean": {
+              "value": 0.01458596943950568,
+              "ci95": [
+                0.01067655406859146,
+                0.018693098012166662
+              ]
+            },
+            "median": {
+              "value": 0.0040528553008787,
+              "ci95": [
+                0.0025871669629475,
+                0.0050490454146292
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 377.1800256949235,
+            "ci95": [
+              353.1732461912435,
+              403.3398943262533
+            ]
+          },
+          "cvar5_daily_profit_eur": 203.917395272345,
+          "reserve_deliverability": 0.915016708963961,
+          "penalties_eur_per_day": 0.6843987067436751,
+          "cost_kw_per_day": 136.87974134873502,
+          "equivalent_full_cycles_per_day": 0.9494556642825982,
+          "curtailment_kwh_per_day": 2.873233376494409,
+          "decision_time_ms_per_step": 1.2796199496360379,
+          "components_eur_per_day": {
+            "dam_eur": 207.12980028698786,
+            "id_eur": 59.13581226583328,
+            "afrr_capacity_eur": 157.3394228428387,
+            "afrr_activation_eur": -0.5587903764303864,
+            "imbalance_eur": -45.18182061756221,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.6843987067436751
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.2851434426229508,
+            "mean_imbalance_kwh_per_day": -222.0946920116408,
+            "correlation_with_id_minus_imbalance_price": -0.007666147733380227
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3212.1813223174604,
+            "metered_kwh_per_day": 2990.0866303058206,
+            "share_steps_short": 0.48845628415300546,
+            "share_steps_long": 0.3563695355191257
+          }
+        },
+        "da-opt-mpc": {
+          "n_episodes": 610,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.0011543994142324129,
+              "ci95": [
+                -0.0034003647664377686,
+                0.0013138307915160122
+              ]
+            },
+            "mean": {
+              "value": 0.006158945138796155,
+              "ci95": [
+                0.00239014765148435,
+                0.010090442125418654
+              ]
+            },
+            "median": {
+              "value": -0.0031991764920021,
+              "ci95": [
+                -0.0045021212665138,
+                -0.0013546229767739501
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 370.11907182500045,
+            "ci95": [
+              346.2447664698978,
+              395.4280758634073
+            ]
+          },
+          "cvar5_daily_profit_eur": 201.5804340820734,
+          "reserve_deliverability": 0.9313065482213467,
+          "penalties_eur_per_day": 0.539040165203346,
+          "cost_kw_per_day": 107.8080330406692,
+          "equivalent_full_cycles_per_day": 0.8928874579015817,
+          "curtailment_kwh_per_day": 3.787927400592936,
+          "decision_time_ms_per_step": 27.34534405181558,
+          "components_eur_per_day": {
+            "dam_eur": 207.12980028698786,
+            "id_eur": 59.13581226583328,
+            "afrr_capacity_eur": 157.3394228428387,
+            "afrr_activation_eur": -0.5587903764303864,
+            "imbalance_eur": -52.38813302902555,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.539040165203346
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.6406420765027323,
+            "mean_imbalance_kwh_per_day": -244.4002727973185,
+            "correlation_with_id_minus_imbalance_price": -0.012212727096482209
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3212.1813223174604,
+            "metered_kwh_per_day": 2967.781049520142,
+            "share_steps_short": 0.6376878415300546,
+            "share_steps_long": 0.14841188524590163
+          }
+        },
+        "da-opt-ppo": {
+          "n_episodes": 3050,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.10790493293038259,
+              "ci95": [
+                -0.11354679925248083,
+                -0.10225859236448515
+              ]
+            },
+            "mean": {
+              "value": -0.10601616126567513,
+              "ci95": [
+                -0.11103573297195206,
+                -0.10109351638258814
+              ]
+            },
+            "median": {
+              "value": -0.10620147264122125,
+              "ci95": [
+                -0.11450439777416604,
+                -0.1003007320377278
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 280.06969785888737,
+            "ci95": [
+              252.19505699361264,
+              308.3013696178077
+            ]
+          },
+          "cvar5_daily_profit_eur": 12.899329889968193,
+          "reserve_deliverability": 0.8929395368236757,
+          "penalties_eur_per_day": 2.7343165292944014,
+          "cost_kw_per_day": 501.6043984832318,
+          "equivalent_full_cycles_per_day": 0.44573849171058266,
+          "curtailment_kwh_per_day": 46.65849080537983,
+          "decision_time_ms_per_step": 0.25567205207461224,
+          "components_eur_per_day": {
+            "dam_eur": 207.11473342604393,
+            "id_eur": 83.27792544950356,
+            "afrr_capacity_eur": 157.33942282877186,
+            "afrr_activation_eur": -0.558790363987732,
+            "imbalance_eur": -164.36927695214982,
+            "degradation_eur": 0.0,
+            "penalties_eur": 2.7343165292944014
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.18257513661202188,
+            "mean_imbalance_kwh_per_day": -864.650884349531,
+            "correlation_with_id_minus_imbalance_price": -0.04215205695169714
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3600.6302575216687,
+            "metered_kwh_per_day": 2735.979373172138,
+            "share_steps_short": 0.5912875683060109,
+            "share_steps_long": 0.4087124316939891
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.0804228152167775,
+            "1": -0.15876904692237911,
+            "2": -0.1311123967848747,
+            "3": -0.10482761784364628,
+            "4": -0.0500697199309379
+          },
+          "score_iqm_std_over_rl_seeds": 0.0424097952732858
+        },
+        "da-opt-sac": {
+          "n_episodes": 3050,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.10646565298751998,
+              "ci95": [
+                -0.11241518307725377,
+                -0.10059782843611928
+              ]
+            },
+            "mean": {
+              "value": -0.10456322206772228,
+              "ci95": [
+                -0.11004843272689066,
+                -0.09910948140499654
+              ]
+            },
+            "median": {
+              "value": -0.1068153830348354,
+              "ci95": [
+                -0.1136434469224382,
+                -0.10097238383550838
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 278.00607460240553,
+            "ci95": [
+              248.47615624183655,
+              307.07107107812084
+            ]
+          },
+          "cvar5_daily_profit_eur": -35.81487708344272,
+          "reserve_deliverability": 0.9479802530680662,
+          "penalties_eur_per_day": 2.091160496732039,
+          "cost_kw_per_day": 158.6564557306851,
+          "equivalent_full_cycles_per_day": 0.4396689409793942,
+          "curtailment_kwh_per_day": 46.430201960491736,
+          "decision_time_ms_per_step": 0.2832198938964805,
+          "components_eur_per_day": {
+            "dam_eur": 207.11473342604393,
+            "id_eur": 90.74080859524389,
+            "afrr_capacity_eur": 157.33942282877186,
+            "afrr_activation_eur": -0.558790363987732,
+            "imbalance_eur": -174.53893938693435,
+            "degradation_eur": 0.0,
+            "penalties_eur": 2.091160496732039
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.18031420765027323,
+            "mean_imbalance_kwh_per_day": -1244.249640562484,
+            "correlation_with_id_minus_imbalance_price": -0.028287560206871253
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3985.146603729818,
+            "metered_kwh_per_day": 2740.896963167334,
+            "share_steps_short": 0.5901571038251366,
+            "share_steps_long": 0.4098428961748634
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.1243791063216341,
+            "1": -0.10774646201490598,
+            "2": -0.042257705929710135,
+            "3": -0.1624603612070487,
+            "4": -0.0764228621735955
+          },
+          "score_iqm_std_over_rl_seeds": 0.0458543868717242
+        },
+        "da-opt-ppol": {
+          "n_episodes": 3050,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.11411469370396314,
+              "ci95": [
+                -0.12157376607295974,
+                -0.10664140467981645
+              ]
+            },
+            "mean": {
+              "value": -0.10418778381587605,
+              "ci95": [
+                -0.11149701268822057,
+                -0.09690982391489586
+              ]
+            },
+            "median": {
+              "value": -0.10949052484271546,
+              "ci95": [
+                -0.1173805643253896,
+                -0.1020656378040398
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 290.28262846265005,
+            "ci95": [
+              249.66475014413993,
+              333.70380779388177
+            ]
+          },
+          "cvar5_daily_profit_eur": -41.15997557750305,
+          "reserve_deliverability": 0.97725068857048,
+          "penalties_eur_per_day": 0.5799398305065255,
+          "cost_kw_per_day": 115.9879661013051,
+          "equivalent_full_cycles_per_day": 0.4770083747887028,
+          "curtailment_kwh_per_day": 8.951863740029363,
+          "decision_time_ms_per_step": 0.2224054244739976,
+          "components_eur_per_day": {
+            "dam_eur": 207.11473342604393,
+            "id_eur": 17.485546016365916,
+            "afrr_capacity_eur": 157.33942282877186,
+            "afrr_activation_eur": -0.5587903639877321,
+            "imbalance_eur": -90.51834361403732,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.5799398305065255
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": 0.014952185792349724,
+            "mean_imbalance_kwh_per_day": 1167.7984177998544,
+            "correlation_with_id_minus_imbalance_price": -0.05649645048775912
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 1524.7914410737988,
+            "metered_kwh_per_day": 2692.589858873653,
+            "share_steps_short": 0.49252390710382515,
+            "share_steps_long": 0.5074760928961749
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.08956117597571026,
+            "1": -0.12013956386651028,
+            "2": -0.08573034528711196,
+            "3": -0.16140999356325508,
+            "4": -0.16256596237899784
+          },
+          "score_iqm_std_over_rl_seeds": 0.03725678727333897
+        }
+      },
+      "layer_attribution": {
+        "n_paired_episodes": 610,
+        "delta_id": {
+          "value": 0.01675637561002769,
+          "ci95": [
+            0.004898088031363364,
+            0.029614688267921335
+          ]
+        },
+        "delta_rt": {
+          "value": -0.009434609648912424,
+          "ci95": [
+            -0.012251304582781822,
+            -0.0059959380519866825
+          ]
+        },
+        "interaction": {
+          "value": 0.002015170696405793,
+          "ci95": [
+            -0.00011405052255516527,
+            0.005656155755582577
+          ]
+        }
+      }
+    },
+    "heldout": {
+      "n_days": 42,
+      "n_activation_seeds": 10,
+      "date_range": [
+        "2025-01-27",
+        "2025-07-27"
+      ],
+      "anchors": {
+        "U_mean_daily_eur": {
+          "value": 1335.727894698925,
+          "ci95": [
+            1214.7101835981275,
+            1463.0716224072482
+          ]
+        },
+        "U_rep_mean_daily_eur": {
+          "value": 1313.7908737883893,
+          "ci95": [
+            1193.0500255631896,
+            1438.603528824966
+          ]
+        },
+        "J_L_mean_daily_eur": {
+          "value": 426.30979161369464,
+          "ci95": [
+            399.8779870281005,
+            452.79787603520066
+          ]
+        },
+        "relative_gap_U_minus_U_rep_over_U": 0.016423270785612086,
+        "max_mip_gap": 0.0070058789144728,
+        "episodes_excluded_from_score": 0,
+        "days_with_an_excluded_episode": 0
+      },
+      "controllers": {
+        "da-only": {
+          "n_episodes": 420,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "mean": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            },
+            "median": {
+              "value": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 426.30979161369464,
+            "ci95": [
+              399.8779870281005,
+              452.79787603520066
+            ]
+          },
+          "cvar5_daily_profit_eur": 248.76202373281575,
+          "reserve_deliverability": 0.8939689845436445,
+          "penalties_eur_per_day": 0.8338873591891369,
+          "cost_kw_per_day": 166.7774718378274,
+          "equivalent_full_cycles_per_day": 0.934492129451776,
+          "curtailment_kwh_per_day": 3.039276497077538,
+          "decision_time_ms_per_step": 0.1371806051142976,
+          "components_eur_per_day": {
+            "dam_eur": 272.58108840173566,
+            "id_eur": 0.0,
+            "afrr_capacity_eur": 151.2198737473816,
+            "afrr_activation_eur": 0.2611895163904076,
+            "imbalance_eur": 3.0815273073759837,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.8338873591891369
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": 0.11230158730158732,
+            "mean_imbalance_kwh_per_day": 59.262388127528816,
+            "correlation_with_id_minus_imbalance_price": -0.014771967338113366
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2794.3245627374954,
+            "metered_kwh_per_day": 2853.5869508650253,
+            "share_steps_short": 0.37529761904761905,
+            "share_steps_long": 0.5561507936507937
+          }
+        },
+        "da-opt-rbc": {
+          "n_episodes": 420,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.0005615026386915904,
+              "ci95": [
+                0.0001200383927195446,
+                0.0010181722744356655
+              ]
+            },
+            "mean": {
+              "value": 0.0016308344662957813,
+              "ci95": [
+                0.0004956648945093221,
+                0.002894303887018023
+              ]
+            },
+            "median": {
+              "value": 0.00022193340311005,
+              "ci95": [
+                -2.5093177503431358e-05,
+                0.0005282539970099501
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 427.45252009402293,
+            "ci95": [
+              401.01943430257637,
+              454.05122381105525
+            ]
+          },
+          "cvar5_daily_profit_eur": 249.56554477656232,
+          "reserve_deliverability": 0.8971601064801624,
+          "penalties_eur_per_day": 0.810784216819332,
+          "cost_kw_per_day": 162.15684336386641,
+          "equivalent_full_cycles_per_day": 0.9206575590544704,
+          "curtailment_kwh_per_day": 3.080894082597445,
+          "decision_time_ms_per_step": 0.145278496099965,
+          "components_eur_per_day": {
+            "dam_eur": 272.58108840173566,
+            "id_eur": 1.0440387557180746,
+            "afrr_capacity_eur": 151.2198737473816,
+            "afrr_activation_eur": 0.2611895163904076,
+            "imbalance_eur": 3.157113889616401,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.810784216819332
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": 0.07693452380952383,
+            "mean_imbalance_kwh_per_day": 38.047643052241625,
+            "correlation_with_id_minus_imbalance_price": -0.020293400861460024
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2818.88768531116,
+            "metered_kwh_per_day": 2856.9353283634014,
+            "share_steps_short": 0.39791666666666664,
+            "share_steps_long": 0.5381200396825396
+          }
+        },
+        "da-opt-rt-mpc": {
+          "n_episodes": 420,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": -0.015943158452796584,
+              "ci95": [
+                -0.01828810308651688,
+                -0.013608852399033816
+              ]
+            },
+            "mean": {
+              "value": -0.014388609174008828,
+              "ci95": [
+                -0.017025603486537273,
+                -0.011746521710799962
+              ]
+            },
+            "median": {
+              "value": -0.01544511699397445,
+              "ci95": [
+                -0.01852789252906975,
+                -0.0135637052015403
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 417.1279322306159,
+            "ci95": [
+              390.4784039495313,
+              443.981444104199
+            ]
+          },
+          "cvar5_daily_profit_eur": 256.2869659765035,
+          "reserve_deliverability": 0.9256204400074874,
+          "penalties_eur_per_day": 0.5471820196406196,
+          "cost_kw_per_day": 109.43640392812392,
+          "equivalent_full_cycles_per_day": 0.8567587086888603,
+          "curtailment_kwh_per_day": 3.940491055877137,
+          "decision_time_ms_per_step": 26.92373270434208,
+          "components_eur_per_day": {
+            "dam_eur": 272.58108840173566,
+            "id_eur": 1.0440387557180746,
+            "afrr_capacity_eur": 151.2198737473816,
+            "afrr_activation_eur": 0.2611895163904076,
+            "imbalance_eur": -7.431076170969236,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.5471820196406196
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.6250248015873017,
+            "mean_imbalance_kwh_per_day": -33.423599294136864,
+            "correlation_with_id_minus_imbalance_price": -0.029654590825427922
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2818.88768531116,
+            "metered_kwh_per_day": 2785.4640860170225,
+            "share_steps_short": 0.6553571428571429,
+            "share_steps_long": 0.14345238095238094
+          }
+        },
+        "da-opt-id-mpc": {
+          "n_episodes": 420,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.008925436093412033,
+              "ci95": [
+                0.0050424046067834155,
+                0.013239553746315887
+              ]
+            },
+            "mean": {
+              "value": 0.015117415905908989,
+              "ci95": [
+                0.009166706114669389,
+                0.021250349367211017
+              ]
+            },
+            "median": {
+              "value": 0.00459237391733295,
+              "ci95": [
+                0.0028815419664570997,
+                0.0074802175654292
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 429.6100067770744,
+            "ci95": [
+              397.3103708981987,
+              458.6328544091932
+            ]
+          },
+          "cvar5_daily_profit_eur": 154.96786588311664,
+          "reserve_deliverability": 0.880065124244929,
+          "penalties_eur_per_day": 0.980788128497452,
+          "cost_kw_per_day": 196.15762569949035,
+          "equivalent_full_cycles_per_day": 0.9249287657425395,
+          "curtailment_kwh_per_day": 3.1434088633936037,
+          "decision_time_ms_per_step": 1.282265953634999,
+          "components_eur_per_day": {
+            "dam_eur": 272.58108840173566,
+            "id_eur": 99.31283696546186,
+            "afrr_capacity_eur": 151.2198737473816,
+            "afrr_activation_eur": 0.2611895163904076,
+            "imbalance_eur": -92.78419372539776,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.980788128497452
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.0724206349206349,
+            "mean_imbalance_kwh_per_day": -462.7608996270827,
+            "correlation_with_id_minus_imbalance_price": -0.01252672828775767
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3351.342661213653,
+            "metered_kwh_per_day": 2888.581761586571,
+            "share_steps_short": 0.47271825396825395,
+            "share_steps_long": 0.46378968253968256
+          }
+        },
+        "da-opt-mpc": {
+          "n_episodes": 420,
+          "n_rl_seeds": 0,
+          "score": {
+            "iqm": {
+              "value": 0.00014488323418223117,
+              "ci95": [
+                -0.005258932801092045,
+                0.006026528378952789
+              ]
+            },
+            "mean": {
+              "value": 0.005264629711822678,
+              "ci95": [
+                -0.0008238532226240896,
+                0.01149300655644676
+              ]
+            },
+            "median": {
+              "value": -0.00172043603938075,
+              "ci95": [
+                -0.0069266708439358,
+                0.0051941978223844
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 424.3540333384711,
+            "ci95": [
+              395.4533965086181,
+              452.2713510912115
+            ]
+          },
+          "cvar5_daily_profit_eur": 182.72180540862405,
+          "reserve_deliverability": 0.9145683278780286,
+          "penalties_eur_per_day": 0.6840750698109235,
+          "cost_kw_per_day": 136.8150139621847,
+          "equivalent_full_cycles_per_day": 0.8832362120144289,
+          "curtailment_kwh_per_day": 4.263184433468311,
+          "decision_time_ms_per_step": 27.38532800192203,
+          "components_eur_per_day": {
+            "dam_eur": 272.58108840173566,
+            "id_eur": 99.31283696546186,
+            "afrr_capacity_eur": 151.2198737473816,
+            "afrr_activation_eur": 0.2611895163904076,
+            "imbalance_eur": -98.33688022268765,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.6840750698109235
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.6723214285714286,
+            "mean_imbalance_kwh_per_day": -508.17719187978497,
+            "correlation_with_id_minus_imbalance_price": -0.013230092809690876
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3351.342661213653,
+            "metered_kwh_per_day": 2843.1654693338687,
+            "share_steps_short": 0.6734623015873016,
+            "share_steps_long": 0.12080853174603175
+          }
+        },
+        "da-opt-ppo": {
+          "n_episodes": 2100,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.0995048828813056,
+              "ci95": [
+                -0.10709016975194664,
+                -0.09203544524767945
+              ]
+            },
+            "mean": {
+              "value": -0.11969605768021316,
+              "ci95": [
+                -0.1264214316755714,
+                -0.11301433819277473
+              ]
+            },
+            "median": {
+              "value": -0.085043394604667,
+              "ci95": [
+                -0.0976878456827105,
+                -0.07918565313767911
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 335.3638681626554,
+            "ci95": [
+              303.7150940612372,
+              364.08018229677833
+            ]
+          },
+          "cvar5_daily_profit_eur": -1.2482332897436375,
+          "reserve_deliverability": 0.9167587696008163,
+          "penalties_eur_per_day": 1.9729780651327344,
+          "cost_kw_per_day": 365.5436047155931,
+          "equivalent_full_cycles_per_day": 0.4230887233257458,
+          "curtailment_kwh_per_day": 42.05731974849236,
+          "decision_time_ms_per_step": 0.2358200049804493,
+          "components_eur_per_day": {
+            "dam_eur": 272.5696922717914,
+            "id_eur": 54.867363613332564,
+            "afrr_capacity_eur": 151.21987374719862,
+            "afrr_activation_eur": 0.2611895168786883,
+            "imbalance_eur": -141.58127292141307,
+            "degradation_eur": 0.0,
+            "penalties_eur": 1.9729780651327344
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.14762896825396826,
+            "mean_imbalance_kwh_per_day": -662.6362719159156,
+            "correlation_with_id_minus_imbalance_price": -0.07361652529606492
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3213.4582205690645,
+            "metered_kwh_per_day": 2550.821948653149,
+            "share_steps_short": 0.5738144841269841,
+            "share_steps_long": 0.4261855158730159
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.10487469127691657,
+            "1": -0.08331233731191431,
+            "2": -0.1380717036910709,
+            "3": -0.08977252163526393,
+            "4": -0.08398560755113092
+          },
+          "score_iqm_std_over_rl_seeds": 0.02298237011995829
+        },
+        "da-opt-sac": {
+          "n_episodes": 2100,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.10486331849160793,
+              "ci95": [
+                -0.11235988267334425,
+                -0.09736459409623176
+              ]
+            },
+            "mean": {
+              "value": -0.13463084886008056,
+              "ci95": [
+                -0.1465344265499848,
+                -0.12363433877068693
+              ]
+            },
+            "median": {
+              "value": -0.09848142376952265,
+              "ci95": [
+                -0.10799214961912802,
+                -0.0893410614463494
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 325.88789505451336,
+            "ci95": [
+              294.4456662668347,
+              355.7988787299695
+            ]
+          },
+          "cvar5_daily_profit_eur": -84.45617868700411,
+          "reserve_deliverability": 0.9502463037835183,
+          "penalties_eur_per_day": 8.41980097108999,
+          "cost_kw_per_day": 219.72458920701138,
+          "equivalent_full_cycles_per_day": 0.4146536465829554,
+          "curtailment_kwh_per_day": 49.537810924223116,
+          "decision_time_ms_per_step": 0.27887439723334567,
+          "components_eur_per_day": {
+            "dam_eur": 272.5696922717914,
+            "id_eur": 64.02800314956235,
+            "afrr_capacity_eur": 151.21987374719862,
+            "afrr_activation_eur": 0.2611895168786883,
+            "imbalance_eur": -153.77106265982763,
+            "degradation_eur": 0.0,
+            "penalties_eur": 8.41980097108999
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.17108134920634924,
+            "mean_imbalance_kwh_per_day": -946.3997794094793,
+            "correlation_with_id_minus_imbalance_price": -0.07681888182214647
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 3464.4497553445985,
+            "metered_kwh_per_day": 2518.0499759351196,
+            "share_steps_short": 0.5855406746031746,
+            "share_steps_long": 0.4144593253968254
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.1532549475209851,
+            "1": -0.11717475480984779,
+            "2": -0.05827665653295614,
+            "3": -0.10544977313689756,
+            "4": -0.11587927890957356
+          },
+          "score_iqm_std_over_rl_seeds": 0.03410660524462285
+        },
+        "da-opt-ppol": {
+          "n_episodes": 2100,
+          "n_rl_seeds": 5,
+          "score": {
+            "iqm": {
+              "value": -0.007103684693793837,
+              "ci95": [
+                -0.018289236063049243,
+                0.003744578542564631
+              ]
+            },
+            "mean": {
+              "value": -0.013926327921836451,
+              "ci95": [
+                -0.02344475743030304,
+                -0.004457604945330071
+              ]
+            },
+            "median": {
+              "value": -0.013019745582918001,
+              "ci95": [
+                -0.0283973330476805,
+                -0.00044017934868735
+              ]
+            }
+          },
+          "mean_daily_profit_eur": {
+            "value": 429.83529624168796,
+            "ci95": [
+              387.7020295241482,
+              471.1273957818194
+            ]
+          },
+          "cvar5_daily_profit_eur": 57.630861781658865,
+          "reserve_deliverability": 0.9787231154433143,
+          "penalties_eur_per_day": 0.3476862353994208,
+          "cost_kw_per_day": 69.53724707988415,
+          "equivalent_full_cycles_per_day": 0.4824789037539096,
+          "curtailment_kwh_per_day": 9.007420714432769,
+          "decision_time_ms_per_step": 0.2165091865227847,
+          "components_eur_per_day": {
+            "dam_eur": 272.5696922717914,
+            "id_eur": 109.80282031135386,
+            "afrr_capacity_eur": 151.21987374719862,
+            "afrr_activation_eur": 0.26118951687868813,
+            "imbalance_eur": -103.67059337013512,
+            "degradation_eur": 0.0,
+            "penalties_eur": 0.3476862353994208
+          },
+          "imbalance": {
+            "mean_sign_of_step_imbalance": -0.13350198412698414,
+            "mean_imbalance_kwh_per_day": 26.14731699426531,
+            "correlation_with_id_minus_imbalance_price": -0.1263493064565648
+          },
+          "delivery": {
+            "scheduled_kwh_per_day": 2562.698857549361,
+            "metered_kwh_per_day": 2588.846174543626,
+            "share_steps_short": 0.5667509920634921,
+            "share_steps_long": 0.43324900793650795
+          },
+          "score_iqm_per_rl_seed": {
+            "0": -0.017641852972373966,
+            "1": 0.09092687814236936,
+            "2": -0.12487613651024962,
+            "3": 0.014961265481880266,
+            "4": 0.10535700014586608
+          },
+          "score_iqm_std_over_rl_seeds": 0.09294115640017427
+        }
+      },
+      "layer_attribution": {
+        "n_paired_episodes": 420,
+        "delta_id": {
+          "value": 0.016569910162722357,
+          "ci95": [
+            -0.001634456226195445,
+            0.03650225036045189
+          ]
+        },
+        "delta_rt": {
+          "value": -0.01293611491719546,
+          "ci95": [
+            -0.018769172705805238,
+            -0.0071719743621191795
+          ]
+        },
+        "interaction": {
+          "value": 0.006166657446218295,
+          "ci95": [
+            0.0027082593607935003,
+            0.01039852434819513
+          ]
+        }
+      }
+    }
+  },
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.9.6",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "1.26.4",
+      "scipy": "1.13.1",
+      "pandas": "2.0.3",
+      "gymnasium": "0.28.1",
+      "cvxpy": "1.7.5",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.13.0",
+      "stable_baselines3": null,
+      "torch": "2.8.0",
+      "omnisafe": "0.5.0",
+      "rliable": "unknown"
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": 0,
+    "created_utc": "2026-11-19T09:09:05Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "task": "T3-Gate",
+    "bootstrap_reps": 5000,
+    "source_commits": [
+      "e854535b3290aa67c1bf4847bf50b8072afec795"
+    ],
+    "source_wall_clock_seconds": 86909.73845791817,
+    "score_min_range_eur": 1.0,
+    "wall_clock_seconds": 6.886696100234985
+  }
+}

@@ -85,6 +85,7 @@ class DayAheadOptimizedDARBCAgent:
         self._d1_cap_up_kw: float = 0.0
         self._d1_cap_down_kw: float = 0.0
         self._last_intraday = np.zeros(1, dtype=np.float32)
+        self._d1_pv_kw: Optional[np.ndarray] = None
 
     def _forecast_chunks(self, obs: dict[str, np.ndarray]) -> np.ndarray:
         forecast = np.asarray(obs.get("forecast", np.array([], dtype=np.float32)), dtype=float)
@@ -203,72 +204,17 @@ class DayAheadOptimizedDARBCAgent:
         afrr_up_price = afrr_up_price[:n]
         afrr_down_price = afrr_down_price[:n]
 
-        schedule = cp.Variable(n)
-        cap_up_d1 = cp.Variable(nonneg=True)
-        cap_down_d1 = cp.Variable(nonneg=True)
-        p_dis = cp.Variable(n, nonneg=True)
-        p_ch = cp.Variable(n, nonneg=True)
-        imbalance_abs = cp.Variable(n, nonneg=True)
-        energy = cp.Variable(n + 1)
-
-        e_min = self.battery_cfg.soc_min * self.battery_cfg.e_max_kwh
-        e_max = self.battery_cfg.soc_max * self.battery_cfg.e_max_kwh
         e_init = float(
             np.clip(float(obs["physical"][0]), self.battery_cfg.soc_min, self.battery_cfg.soc_max)
             * self.battery_cfg.e_max_kwh
         )
-        sustain_h = max(self.dt_hours, self.config.reserve_sustain_hours)
-
-        constraints = [
-            energy[0] == e_init,
-            energy >= e_min,
-            energy <= e_max,
-            schedule >= 0.0,
-            schedule <= self.grid_cfg.export_cap_kw,
-            cap_up_d1 <= self.reserve_power_cap_kw,
-            cap_down_d1 <= self.reserve_power_cap_kw,
-            cap_up_d1 + cap_down_d1 <= self.battery_cfg.p_pcs_kw,
-        ]
-        revenue_terms = []
-        penalty_terms = []
-
-        for t in range(n):
-            net_grid_kw = pv_fcst[t] + p_dis[t] - p_ch[t]
-            constraints.extend(
-                [
-                    p_dis[t] + cap_up_d1 <= self.battery_cfg.p_pcs_kw,
-                    p_ch[t] + cap_down_d1 <= self.battery_cfg.p_pcs_kw,
-                    net_grid_kw <= self.grid_cfg.export_cap_kw,
-                    net_grid_kw >= -self.grid_cfg.import_cap_kw,
-                    energy[t] >= e_min + self.reserve_soc_buffer_kwh + (sustain_h / self.eta) * cap_up_d1,
-                    energy[t] <= e_max - self.reserve_soc_buffer_kwh - (sustain_h * self.eta) * cap_down_d1,
-                    energy[t + 1]
-                    == self.self_discharge_factor * energy[t]
-                    - (self.dt_hours / self.eta) * p_dis[t]
-                    + (self.dt_hours * self.eta) * p_ch[t],
-                    imbalance_abs[t] >= net_grid_kw - schedule[t],
-                    imbalance_abs[t] >= -(net_grid_kw - schedule[t]),
-                ]
-            )
-            revenue_terms.append(float(dam_price[t]) * schedule[t] * (self.dt_hours / 1000.0))
-            revenue_terms.append(float(afrr_up_price[t]) * cap_up_d1 * (self.dt_hours / 1000.0))
-            revenue_terms.append(float(afrr_down_price[t]) * cap_down_d1 * (self.dt_hours / 1000.0))
-            penalty_terms.append(
-                self.config.day_ahead_tracking_penalty_eur_mwh
-                * imbalance_abs[t]
-                * (self.dt_hours / 1000.0)
-            )
-            penalty_terms.append(
-                self.config.throughput_penalty_eur_mwh
-                * (p_dis[t] + p_ch[t])
-                * (self.dt_hours / 1000.0)
-            )
-
-        target_energy = self.config.terminal_soc_target * self.battery_cfg.e_max_kwh
-        terminal_penalty = self.config.terminal_soc_weight * cp.square(
-            (energy[-1] - target_energy) / self.battery_cfg.e_max_kwh
-        )
-        problem = cp.Problem(cp.Maximize(cp.sum(revenue_terms) - cp.sum(penalty_terms) - terminal_penalty), constraints)
+        problem, handles = self._d1_problem(n)
+        handles["pv"].value = np.asarray(pv_fcst, dtype=float)
+        handles["dam"].value = np.asarray(dam_price, dtype=float)
+        handles["up_sum"].value = float(np.sum(afrr_up_price))
+        handles["down_sum"].value = float(np.sum(afrr_down_price))
+        handles["e_init"].value = e_init
+        schedule, cap_up_d1, cap_down_d1 = handles["schedule"], handles["cap_up"], handles["cap_down"]
 
         try:
             problem.solve(solver=self.config.solver, warm_start=True, max_iter=self.config.solver_max_iter, verbose=False)
@@ -287,10 +233,127 @@ class DayAheadOptimizedDARBCAgent:
             "schedule": self._clip_day_ahead(out_schedule),
             "cap_up": float(np.clip(cap_up_d1.value or 0.0, 0.0, self.reserve_power_cap_kw)),
             "cap_down": float(np.clip(cap_down_d1.value or 0.0, 0.0, self.reserve_power_cap_kw)),
+            # The QP's own battery plan (AC, + = discharge) and planned imbalance
+            # |metered - schedule|; used by the R4 consistency test, not by the agents.
+            "battery_kw": np.asarray(handles["p_dis"].value - handles["p_ch"].value, dtype=float),
+            "planned_imbalance_abs_kw": np.asarray(handles["imbalance_abs"].value, dtype=float),
         }
+
+    @property
+    def plant_consistent(self) -> bool:
+        """Realism fix R4: plan with the plant's auxiliary load and metering loss (env flag)."""
+        env = getattr(self.env, "unwrapped", self.env)
+        return bool(getattr(env, "da_plant_consistent", False))
+
+    def _d1_problem(self, n: int) -> tuple[Any, dict[str, Any]]:
+        """Build the D-1 co-optimisation once and reuse it with new data.
+
+        The problem is parametrised in the PV forecast, the DAM prices, the
+        summed aFRR capacity prices and the initial energy, so every delivery
+        day re-solves the same compiled problem instead of rebuilding it.
+        """
+        consistent = self.plant_consistent
+        cache = getattr(self, "_d1_cache", None)
+        if cache is not None and cache[0] == (n, consistent):
+            return cache[1], cache[2]
+
+        cfg, bat, grid = self.config, self.battery_cfg, self.grid_cfg
+        dt, eta = self.dt_hours, self.eta
+        pv = cp.Parameter(n)
+        dam = cp.Parameter(n)
+        up_sum = cp.Parameter()
+        down_sum = cp.Parameter()
+        e_init = cp.Parameter()
+
+        schedule = cp.Variable(n)
+        cap_up_d1 = cp.Variable(nonneg=True)
+        cap_down_d1 = cp.Variable(nonneg=True)
+        p_dis = cp.Variable(n, nonneg=True)
+        p_ch = cp.Variable(n, nonneg=True)
+        imbalance_abs = cp.Variable(n, nonneg=True)
+        energy = cp.Variable(n + 1)
+
+        e_min = bat.soc_min * bat.e_max_kwh
+        e_max = bat.soc_max * bat.e_max_kwh
+        sustain_h = max(dt, cfg.reserve_sustain_hours)
+        net_grid_kw = pv + p_dis - p_ch
+
+        constraints = [
+            energy[0] == e_init,
+            energy >= e_min,
+            energy <= e_max,
+            schedule >= 0.0,
+            schedule <= grid.export_cap_kw,
+            cap_up_d1 <= self.reserve_power_cap_kw,
+            cap_down_d1 <= self.reserve_power_cap_kw,
+            cap_up_d1 + cap_down_d1 <= bat.p_pcs_kw,
+            p_dis + cap_up_d1 <= bat.p_pcs_kw,
+            p_ch + cap_down_d1 <= bat.p_pcs_kw,
+            net_grid_kw <= grid.export_cap_kw,
+            net_grid_kw >= -grid.import_cap_kw,
+            energy[:-1] >= e_min + self.reserve_soc_buffer_kwh + (sustain_h / eta) * cap_up_d1,
+            energy[:-1] <= e_max - self.reserve_soc_buffer_kwh - (sustain_h * eta) * cap_down_d1,
+        ]
+        aux_unserved_cost = 0.0
+        if not consistent:
+            # Version 4: AC battery power straight into the energy balance, no
+            # auxiliary load, imbalance against the unmetered injection.
+            constraints += [
+                energy[1:] == self.self_discharge_factor * energy[:-1] - (dt / eta) * p_dis + (dt * eta) * p_ch,
+                imbalance_abs >= net_grid_kw - schedule,
+                imbalance_abs >= -(net_grid_kw - schedule),
+            ]
+        else:
+            # R4: the plant's accounting. The battery also supplies the auxiliary
+            # load (DC power = p_dis - p_ch + aux, models.battery), self-discharge
+            # acts after the step, and the schedule is compared with the
+            # *metered* injection (1 % loss on export and import, models.grid).
+            aux_kw = float(bat.aux_kw)
+            env_u = getattr(self.env, "unwrapped", self.env)
+            loss = float(grid.loss_frac) if getattr(getattr(env_u, "options", None), "metering_losses", True) else 0.0
+            dc_dis = cp.Variable(n, nonneg=True)
+            dc_ch = cp.Variable(n, nonneg=True)
+            aux_unserved = cp.Variable(n, nonneg=True)       # only if the battery cannot supply it
+            exp_kw = cp.Variable(n, nonneg=True)
+            imp_kw = cp.Variable(n, nonneg=True)
+            metered_kw = (1.0 - loss) * exp_kw - (1.0 + loss) * imp_kw
+            constraints += [
+                aux_unserved <= aux_kw,
+                dc_dis - dc_ch == p_dis - p_ch + aux_kw - aux_unserved,
+                energy[1:] == self.self_discharge_factor * (energy[:-1] - (dt / eta) * dc_dis + (dt * eta) * dc_ch),
+                exp_kw - imp_kw == net_grid_kw,
+                exp_kw <= grid.export_cap_kw,
+                imp_kw <= grid.import_cap_kw,
+                # Balanced schedule: the DAM schedule equals the planned metered
+                # injection at every step, so delivering the plan exactly gives
+                # zero imbalance. (Version 4 priced deviations at the tracking
+                # penalty, so whenever the DAM price exceeded it the plan sold
+                # the full export capacity regardless of what it could deliver.)
+                schedule == metered_kw,
+                imbalance_abs == 0.0,
+            ]
+            aux_unserved_cost = 1000.0 * (dt / 1000.0) * cp.sum(aux_unserved)
+        k = dt / 1000.0
+        revenue = k * (dam @ schedule) + k * up_sum * cap_up_d1 + k * down_sum * cap_down_d1
+        penalty = (
+            cfg.day_ahead_tracking_penalty_eur_mwh * k * cp.sum(imbalance_abs)
+            + cfg.throughput_penalty_eur_mwh * k * cp.sum(p_dis + p_ch)
+        )
+        target_energy = cfg.terminal_soc_target * bat.e_max_kwh
+        terminal_penalty = cfg.terminal_soc_weight * cp.square((energy[-1] - target_energy) / bat.e_max_kwh)
+        problem = cp.Problem(cp.Maximize(revenue - penalty - terminal_penalty - aux_unserved_cost), constraints)
+        handles = {
+            "pv": pv, "dam": dam, "up_sum": up_sum, "down_sum": down_sum, "e_init": e_init,
+            "schedule": schedule, "cap_up": cap_up_d1, "cap_down": cap_down_d1,
+            "p_dis": p_dis, "p_ch": p_ch, "imbalance_abs": imbalance_abs,
+        }
+        self._d1_cache = ((n, consistent), problem, handles)
+        return problem, handles
 
     def _build_d1_plan(self, obs: dict[str, np.ndarray]) -> dict[str, Any]:
         """Build complete D-1 plan: DAM schedule and aFRR capacity."""
+        # PV forecast behind the plan, kept for the rev1 intraday reference (A1).
+        self._d1_pv_kw = self._episode_forecast_pv_kw(obs).astype(float)
         result = self._solve_d1_cooptimization(obs)
         if result is not None:
             return result
@@ -378,11 +441,51 @@ class DayAheadOptimizedDARBCAgent:
         cap_down = nominal_reserve_kw if (cap_down_price >= self.config.reserve_price_threshold and soc < 0.75) else 0.0
         return min(cap_up, reserve_up_limit_kw), min(cap_down, reserve_down_limit_kw)
 
+    @property
+    def id_reference(self) -> str:
+        """rev1 A1: what the intraday layer expects to deliver (env attribute, default v3)."""
+        env = getattr(self.env, "unwrapped", self.env)
+        return str(getattr(env, "id_reference", "pv_only"))
+
+    @property
+    def _position_clip(self) -> bool:
+        env = getattr(self.env, "unwrapped", self.env)
+        return getattr(getattr(env, "options", None), "id_position_limit", "off") == "clip"
+
+    def _expected_delivery_kw(self, target: slice, obs: dict[str, np.ndarray]) -> np.ndarray:
+        """rev1 A1: D-1 planned metered injection updated by the PV forecast change since D-1.
+
+        ``v = x + (1 - loss) * (pv_forecast_now - pv_forecast_D-1)`` per step of ``target``.
+        ``x`` is the balanced D-1 schedule (R4), i.e. the planned metered
+        injection including the planned battery power and auxiliary load.
+        """
+        x = np.asarray(self._day_ahead_schedule[target], dtype=float)
+        pv_now = self._pv_forecast_for_slice(target, obs)
+        pv_d1 = (np.asarray(self._d1_pv_kw[target], dtype=float) if self._d1_pv_kw is not None
+                 else self._episode_forecast_pv_kw(obs)[target])
+        n = min(len(x), len(pv_now), len(pv_d1))
+        env = getattr(self.env, "unwrapped", self.env)
+        loss = float(self.grid_cfg.loss_frac) if getattr(getattr(env, "options", None), "metering_losses", True) else 0.0
+        return x[:n] + (1.0 - loss) * (pv_now[:n] - pv_d1[:n])
+
+    def _position_bounds_kw(self, target: slice) -> tuple[float, float]:
+        """Correction range that keeps ``-P_imp <= x_k + y <= P_exp`` on every step of the block."""
+        x = np.asarray(self._day_ahead_schedule[target], dtype=float)
+        return float(np.max(-self.grid_cfg.import_cap_kw - x)), float(np.min(self.grid_cfg.export_cap_kw - x))
+
     def _rbc_intraday_action(self, obs: dict[str, np.ndarray]) -> np.ndarray:
         if self._day_ahead_schedule is None:
             self._day_ahead_schedule = self._build_day_ahead_schedule(obs)
 
         target = self._target_slice()
+        if self.id_reference == "d1_plan" and target.start < target.stop:
+            # rev1 A1: y = mean(v) - mean(x + Y) over the block; Y = 0 there (one
+            # correction per block), clipped to the position limits.
+            v = self._expected_delivery_kw(target, obs)
+            x = np.asarray(self._day_ahead_schedule[target], dtype=float)[: len(v)]
+            lo, hi = self._position_bounds_kw(target)
+            y = float(np.clip(np.mean(v) - np.mean(x), lo, hi))
+            return self._clip_intraday(np.array([y], dtype=np.float32))
         pv_target = self._pv_forecast_for_slice(target, obs)
         forecast_target_kw = float(np.mean(pv_target)) if pv_target.size else float(obs["physical"][3])
         dam_target_kw = self._mean_profile(
@@ -626,7 +729,10 @@ class DayAheadOptimizedDAMPCIntradayRealTimeAgent(DayAheadOptimizedDARTMPCAgent)
             return self._clip_intraday(np.array([0.0], dtype=np.float32))
 
         schema = self.env.schema
-        pv = self._pv_forecast_for_slice(target, obs)
+        if self.id_reference == "d1_plan":
+            pv = self._expected_delivery_kw(target, obs)      # rev1 A1: expected metered delivery
+        else:
+            pv = self._pv_forecast_for_slice(target, obs)
         dam = self._day_ahead_schedule[target].astype(float)
         price_id = self._slice_prices(target, obs, schema.price_id_eur_mwh)
         price_imb = self._slice_prices(target, obs, schema.price_imb_eur_mwh)
@@ -649,6 +755,9 @@ class DayAheadOptimizedDAMPCIntradayRealTimeAgent(DayAheadOptimizedDARTMPCAgent)
         imbalance_abs = cp.Variable(n, nonneg=True)
 
         constraints = [id_adjustment >= id_low, id_adjustment <= id_high]
+        if self._position_clip:     # rev1 A2: the environment enforces this bound
+            lo, hi = self._position_bounds_kw(target)
+            constraints += [id_adjustment >= lo, id_adjustment <= hi]
         revenue_terms = []
         penalty_terms = []
 
@@ -700,3 +809,43 @@ class DayAheadOptimizedDAMPCIntradayRealTimeAgent(DayAheadOptimizedDARTMPCAgent)
 
         action["real_time"] = self._clip_low_level(self._realtime_dispatch_kw(obs))
         return action
+
+
+class DayAheadOnlyAgent(DayAheadOptimizedDARBCAgent):
+    """DA-ONLY reference: shared D-1 plan, no intraday correction, rule-based real time.
+
+    It recombines existing layers only: the D-1 optimisation and the real-time
+    rule of :class:`DayAheadOptimizedDARBCAgent`, with the intraday action held
+    at zero. It is the lower anchor of the normalised benchmark score.
+    """
+
+    name = "day_ahead_only"
+
+    def act(self, obs: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
+        action_mask = np.asarray(obs["action_mask"], dtype=float)
+        action = self._blank_action()
+
+        if action_mask[0] > 0.5:
+            plan = self._build_d1_plan(obs)
+            self._day_ahead_schedule = plan["schedule"]
+            self._d1_cap_up_kw = float(plan["cap_up"])
+            self._d1_cap_down_kw = float(plan["cap_down"])
+            action["day_ahead"] = self._day_ahead_schedule.astype(np.float32)
+            action["day_ahead_afrr"] = np.array([self._d1_cap_up_kw, self._d1_cap_down_kw], dtype=np.float32)
+
+        # intraday stays at zero in every block
+        action["real_time"] = self._clip_low_level(self._rbc_realtime_dispatch_kw(obs))
+        return action
+
+
+class DayAheadOptimizedDAIDMPCAgent(DayAheadOptimizedDAMPCIntradayRealTimeAgent):
+    """DA-OPT-ID-MPC: shared D-1 plan, MPC intraday correction, rule-based real time.
+
+    Completes the 2 x 2 design {rule, MPC} x {intraday, real time} from existing
+    layers: the intraday MPC of DA-OPT-MPC and the real-time rule of DA-OPT-RBC.
+    """
+
+    name = "day_ahead_optimized_da_id_mpc"
+
+    def _realtime_dispatch_kw(self, obs: dict[str, np.ndarray]) -> float:
+        return self._rbc_realtime_dispatch_kw(obs)

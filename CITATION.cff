@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "PV-BESS-Gym: a market-sequenced Gymnasium benchmark for solar-plus-storage in the Greek electricity market"
+type: software
+version: 2.1.0
+date-released: "2026-11-12"
+license: MIT
+repository-code: "https://github.com/ArtioTech/PVStoreGym"
+authors:
+  - family-names: Korkas
+    given-names: "Christos D."
+    affiliation: "Power & Energy Systems Laboratory, University of Western Macedonia"
+keywords:
+  - Gymnasium
+  - reinforcement learning
+  - battery energy storage
+  - photovoltaics
+  - electricity markets
+  - benchmark
+preferred-citation:
+  type: conference-paper
+  title: "PV-BESS-Gym: A Market-Sequenced Gymnasium Benchmark for Real-Time Control of Solar-plus-Storage in the Greek Electricity Market"
+  authors:
+    - family-names: Korkas
+      given-names: "Christos D."
+  collection-title: "Proceedings of the SyNERGY MED Conference"
+  year: 2026

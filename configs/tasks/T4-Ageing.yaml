@@ -1,0 +1,14 @@
+# Benchmark task T4-Ageing (protocol: configs/journal.yaml).
+name: T4-Ageing
+forecast_residual_scaling: 1.0      # kappa: scales (weather forecast - actual) before the PV model
+da_price_info: forecast             # R3: naive prev_day DAM forecast before the D-1 commitment (version 4: realised)
+gate_closure_minutes: 60           # intraday gate-closure lead G
+c_thr_eur_mwh: 5.7                # degradation cost per MWh of battery throughput |p_bat| dt
+# Author-approved value (2026-11-17), derived as
+#   c_thr = 1000 * pack cost / (2 * lifetime full cycles)
+#         = 1000 * 61.9 EUR/kWh / (2 * 5475) = 5.7 EUR/MWh
+# - pack cost: BloombergNEF battery price survey, 9 Dec 2025: stationary-storage
+#   pack price 70 USD/kWh; converted at the 2025 ECB average of 1.13 USD/EUR
+# - lifetime: NREL Annual Technology Baseline 2025, utility-scale battery
+#   storage: 15-year lifetime at approximately one cycle per day (15 x 365 cycles)
+# - factor 2: both charging and discharging energy count as throughput

@@ -5,6 +5,8 @@ from typing import Any, Callable, Literal, Mapping
 
 from pv_bess_gym.agents.day_ahead_baselines import (
     DayAheadMPCConfig,
+    DayAheadOnlyAgent,
+    DayAheadOptimizedDAIDMPCAgent,
     DayAheadOptimizedDAMPCIntradayRealTimeAgent,
     DayAheadOptimizedDARBCAgent,
     DayAheadOptimizedDARTMPCAgent,
@@ -43,6 +45,14 @@ def _build_da_opt_rt_mpc(env: Any, options: Mapping[str, Any]) -> DayAheadOptimi
 
 def _build_da_opt_mpc(env: Any, options: Mapping[str, Any]) -> DayAheadOptimizedDAMPCIntradayRealTimeAgent:
     return DayAheadOptimizedDAMPCIntradayRealTimeAgent(env, config=options.get("day_ahead_config"))
+
+
+def _build_da_only(env: Any, options: Mapping[str, Any]) -> DayAheadOnlyAgent:
+    return DayAheadOnlyAgent(env, config=options.get("day_ahead_config"))
+
+
+def _build_da_opt_id_mpc(env: Any, options: Mapping[str, Any]) -> DayAheadOptimizedDAIDMPCAgent:
+    return DayAheadOptimizedDAIDMPCAgent(env, config=options.get("day_ahead_config"))
 
 
 def _build_rolling_rbc(env: Any, options: Mapping[str, Any]) -> HierarchicalHeuristicAgent:
@@ -89,6 +99,22 @@ ALGORITHM_REGISTRY: dict[str, AlgorithmSpec] = {
         market_mode="unified",
         description="Ablation: D-1 co-optimized DAM schedule and aFRR capacity, RBC SIDC intraday correction, MPC real-time battery dispatch.",
         builder=_build_da_opt_rt_mpc,
+        benchmark=True,
+        include_in_all=False,
+    ),
+    "da-only": AlgorithmSpec(
+        name="da-only",
+        market_mode="unified",
+        description="Reference: D-1 co-optimized DAM schedule and aFRR capacity, no intraday correction, RBC real-time battery dispatch.",
+        builder=_build_da_only,
+        benchmark=True,
+        include_in_all=False,
+    ),
+    "da-opt-id-mpc": AlgorithmSpec(
+        name="da-opt-id-mpc",
+        market_mode="unified",
+        description="Ablation: D-1 co-optimized DAM schedule and aFRR capacity, MPC SIDC intraday correction, RBC real-time battery dispatch.",
+        builder=_build_da_opt_id_mpc,
         benchmark=True,
         include_in_all=False,
     ),

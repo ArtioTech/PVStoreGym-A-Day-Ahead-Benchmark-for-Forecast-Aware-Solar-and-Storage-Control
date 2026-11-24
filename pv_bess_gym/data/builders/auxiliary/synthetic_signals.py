@@ -44,16 +44,18 @@ def build_weather_forecasts(actuals: pd.DataFrame, seed: int) -> pd.DataFrame:
     )
 
 
-def build_afrr_activation_signals(index: pd.DatetimeIndex, seed: int) -> pd.DataFrame:
-    """Create sparse, autocorrelated synthetic aFRR activations in [0, 1]."""
+def simulate_afrr_activation(rng: np.random.Generator, n: int) -> tuple[np.ndarray, np.ndarray]:
+    """Draw ``n`` steps of sparse, autocorrelated aFRR activation ratios in [0, 1].
 
-    rng = np.random.default_rng(seed)
-    states = np.zeros(len(index), dtype=np.int8)
-    up = np.zeros(len(index), dtype=float)
-    down = np.zeros(len(index), dtype=float)
+    Three-state Markov chain (idle / up episode / down episode) with a small
+    leakage on the inactive side. The chain starts idle. Returns ``(up, down)``.
+    """
+    states = np.zeros(n, dtype=np.int8)
+    up = np.zeros(n, dtype=float)
+    down = np.zeros(n, dtype=float)
 
     level = 0.0
-    for i in range(len(index)):
+    for i in range(n):
         state = states[i - 1] if i > 0 else 0
         if state == 0:
             draw = rng.random()
@@ -88,14 +90,13 @@ def build_afrr_activation_signals(index: pd.DatetimeIndex, seed: int) -> pd.Data
         else:
             up[i] = leakage * 0.40
             down[i] = leakage * 0.40
+    return np.clip(up, 0.0, 1.0), np.clip(down, 0.0, 1.0)
 
-    return pd.DataFrame(
-        {
-            "afrr_act_up": np.clip(up, 0.0, 1.0),
-            "afrr_act_down": np.clip(down, 0.0, 1.0),
-        },
-        index=index,
-    )
+
+def build_afrr_activation_signals(index: pd.DatetimeIndex, seed: int) -> pd.DataFrame:
+    """Create sparse, autocorrelated synthetic aFRR activations in [0, 1]."""
+    up, down = simulate_afrr_activation(np.random.default_rng(seed), len(index))
+    return pd.DataFrame({"afrr_act_up": up, "afrr_act_down": down}, index=index)
 
 
 def _ar1_noise(rng: np.random.Generator, n: int, phi: float, sigma: float) -> np.ndarray:

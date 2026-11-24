@@ -141,3 +141,34 @@ def upsample_to_15min(series: pd.Series, target_index: pd.DatetimeIndex, label: 
     if out.isna().all():
         raise ValueError(f"Could not align parsed series '{label}' to 15-minute index.")
     return out
+
+
+def step_hold_to_15min(
+    series: pd.Series,
+    target_index: pd.DatetimeIndex,
+    max_hold_steps: int = 3,
+) -> tuple[pd.Series, int]:
+    """Align a market-price series to the 15-minute index without interpolating.
+
+    Market prices are constant over their market time unit (60, 30 or 15
+    minutes), so each published value is held forward for at most
+    ``max_hold_steps`` extra 15-minute steps (3 covers a 60-minute unit).
+    Linear interpolation would invent prices that never cleared.
+
+    Steps still empty after the hold are genuine gaps in the source; they are
+    forward- then back-filled and their count is returned so the caller can
+    record it in the dataset metadata.
+    """
+    base = pd.to_numeric(series, errors="coerce").dropna()
+    base.index = pd.DatetimeIndex(base.index)
+    base = base[~base.index.duplicated(keep="last")].sort_index()
+    held = base.reindex(base.index.union(target_index)).sort_index()
+    if max_hold_steps > 0:
+        held = held.ffill(limit=max_hold_steps)
+    held = held.reindex(target_index)
+    n_gaps = int(held.isna().sum())
+    if n_gaps == len(target_index):
+        raise ValueError("Could not align parsed price series to the 15-minute index.")
+    if n_gaps:
+        held = held.ffill().bfill()
+    return held, n_gaps

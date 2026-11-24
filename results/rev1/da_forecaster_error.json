@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+    "dirty": true,
+    "versions": {
+      "python": "3.14.10",
+      "pv_bess_gym": "2.1.0",
+      "numpy": "2.4.2",
+      "scipy": "1.17.1",
+      "pandas": "3.0.1",
+      "gymnasium": "1.2.3",
+      "cvxpy": "1.8.1",
+      "clarabel": "0.11.1",
+      "highspy": "unknown",
+      "pvlib": "0.15.0",
+      "stable_baselines3": "2.9.2",
+      "torch": "2.15.0",
+      "omnisafe": null,
+      "rliable": null
+    },
+    "solvers": {
+      "qp": "CLARABEL (via cvxpy)",
+      "milp": "HiGHS (via scipy.optimize.milp)"
+    },
+    "seed": null,
+    "created_utc": "2026-11-19T09:17:36Z",
+    "machine": {
+      "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "processor": "arm"
+    },
+    "wall_clock_seconds": 1.6969599723815918
+  },
+  "unit": "EUR/MWh",
+  "default": "prev_day",
+  "methods": {
+    "prev_day": {
+      "train": {
+        "n_steps": 16128,
+        "mae": 23.31757192460318,
+        "rmse": 36.61273013666853,
+        "bias": -0.04119295634920657,
+        "mean_price": 107.0825173611111
+      },
+      "validation": {
+        "n_steps": 5856,
+        "mae": 20.36474043715847,
+        "rmse": 32.27014708301719,
+        "bias": -0.7893169398907106,
+        "mean_price": 82.79528005464482
+      },
+      "test": {
+        "n_steps": 8736,
+        "mae": 25.112198946886444,
+        "rmse": 40.17622960914432,
+        "bias": 0.21639766483516457,
+        "mean_price": 110.09165064102564
+      }
+    },
+    "prev_week": {
+      "train": {
+        "n_steps": 16128,
+        "mae": 27.327212301587302,
+        "rmse": 40.37881918518275,
+        "bias": -1.0629861111111112,
+        "mean_price": 107.0825173611111
+      },
+      "validation": {
+        "n_steps": 5856,
+        "mae": 25.08888661202186,
+        "rmse": 37.833964867685886,
+        "bias": -0.08709699453551803,
+        "mean_price": 82.79528005464482
+      },
+      "test": {
+        "n_steps": 8736,
+        "mae": 32.5704201007326,
+        "rmse": 49.04210528756986,
+        "bias": 0.640802426739927,
+        "mean_price": 110.09165064102564
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "commit": "e854535b3290aa67c1bf4847bf50b8072afec795",
+  "dirty": true,
+  "versions": {
+    "python": "3.14.10",
+    "pv_bess_gym": "2.1.0",
+    "numpy": "2.4.2",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "gymnasium": "1.2.3",
+    "cvxpy": "1.8.1",
+    "clarabel": "0.11.1",
+    "highspy": "unknown",
+    "pvlib": "0.15.0",
+    "stable_baselines3": "2.9.2",
+    "torch": "2.15.0",
+    "omnisafe": null,
+    "rliable": null
+  },
+  "solvers": {
+    "qp": "CLARABEL (via cvxpy)",
+    "milp": "HiGHS (via scipy.optimize.milp)"
+  },
+  "seed": {
+    "activation_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "created_utc": "2026-11-19T09:08:33Z",
+  "machine": {
+    "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+    "processor": "arm"
+  },
+  "task": "T3-Gate",
+  "c_thr_eur_mwh": 0.0,
+  "oracle_key": "gate120_cthr0",
+  "source_commits": [
+    "e854535b3290aa67c1bf4847bf50b8072afec795"
+  ],
+  "source_dirty": true,
+  "wall_clock_seconds": 86909.73845791817,
+  "n_episodes": 38800,
+  "oracle_dominance_violations": 0,
+  "protocol": "pvbess-greece-2025-journal-rev1"
+}
